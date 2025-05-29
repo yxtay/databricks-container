@@ -178,7 +178,7 @@ opentelemetry-sdk~=1.33.1
     # via mlflow-skinny
 opentelemetry-semantic-conventions~=0.54b1
     # via opentelemetry-sdk
-packaging~=24.2
+packaging~=25.0
     # via
     #   black
     #   ipykernel
