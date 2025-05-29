@@ -8,8 +8,8 @@ ipykernel
 matplotlib
 mlflow-skinny
 pip
-pyspark[connect]
 pyccolo
+pyspark[connect]
 setuptools
 #######################
 # Additional Packages #
