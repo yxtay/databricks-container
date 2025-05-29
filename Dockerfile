@@ -1,6 +1,8 @@
 # hadolint global ignore=DL3008
 ARG BASE_IMAGE=ubuntu:24.04
 
+FROM ghcr.io/astral-sh/uv:latest AS uv
+
 FROM ${BASE_IMAGE} AS base
 
 ARG DATABRICKS_RUNTIME_VERSION=16.4
@@ -80,7 +82,7 @@ ENV UV_PYTHON=${PYTHON_VERSION} \
 
 # https://github.com/databricks/containers/blob/master/ubuntu/python/Dockerfile
 # databricks uses root virtualenv to create virtual environments
-RUN --mount=from=ghcr.io/astral-sh/uv:latest,source=/uv,target=/bin/uv \
+RUN --mount=from=uv,source=/uv,target=/bin/uv \
     uv python install && \
     uv venv --allow-existing /usr && \
     uv pip install virtualenv && \
@@ -90,7 +92,7 @@ FROM base AS runtime
 
 # jumpstart package versions
 ARG requirements_in="${DATABRICKS_RUNTIME_VERSION}/requirements.in"
-RUN --mount=from=ghcr.io/astral-sh/uv:latest,source=/uv,target=/bin/uv \
+RUN --mount=from=uv,source=/uv,target=/bin/uv \
     --mount=source="${requirements_in}",target=requirements.txt \
     uv venv ${VIRTUAL_ENV} && \
     uv pip install --requirements requirements.txt && \
