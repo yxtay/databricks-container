@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices",
+    ":automergeDigest",
+    ":automergeMinor",
+    ":enableVulnerabilityAlerts",
+    ":maintainLockFilesWeekly",
+    ":separateMultipleMajorReleases",
+    "group:allNonMajor",
+    "group:allDigest",
+    "security:openssf-scorecard"
+  ],
+  "dependencyDashboardOSVVulnerabilitySummary": "all",
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "automerge": true,
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "automerge": false,
+      "groupName": "python",
+      "matchPackageNames": ["python"],
+      "matchUpdateTypes": ["minor"]
+    }
+  ]
+}
