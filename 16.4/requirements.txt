@@ -237,7 +237,7 @@ pygments~=2.19.1
     #   ipython-pygments-lexers
 pyparsing~=3.2.3
     # via matplotlib
-pyspark[connect]~=3.5.2
+pyspark[connect]~=4.0.0
     # via
     #   -r 16.4/requirements.in
     #   delta-spark
