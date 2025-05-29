@@ -15,15 +15,15 @@ sed -Ei 's/~=/>=/' "${requirements_in}"
 # compile requirements
 uv python install
 uv pip compile --no-strip-extras --upgrade --verbose \
-	--index-strategy unsafe-best-match \
-	"${requirements_in}" \
-	--output-file "${requirements_txt}"
+  --index-strategy unsafe-best-match \
+  "${requirements_in}" \
+  --output-file "${requirements_txt}"
 
 # relax compatible requirements
 sed -Ei 's/==/~=/' "${requirements_txt}"
 
 # update requirements-extra
 uv run merge_requirements.py \
-	--requirements_in "${requirements_in}" \
-	--requirements_txt "${requirements_txt}" \
-	--requirements_out "${requirements_in}"
+  --requirements_in "${requirements_in}" \
+  --requirements_txt "${requirements_txt}" \
+  --requirements_out "${requirements_in}"
