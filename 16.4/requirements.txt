@@ -126,7 +126,7 @@ nest-asyncio~=1.6.0
     # via ipykernel
 networkx~=3.4.2
     # via torch
-numpy~=1.26.4
+numpy~=2.2.6
     # via
     #   contourpy
     #   matplotlib
