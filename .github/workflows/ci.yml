@@ -18,36 +18,9 @@ concurrency:
   cancel-in-progress: ${{ github.ref_name != github.event.repository.default_branch }}
 
 jobs:
-  script:
-    permissions:
-      contents: read
-
-    runs-on: ubuntu-latest
-    env:
-      DATABRICKS_RUNTIME_VERSION: 16.4
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-
-      - uses: astral-sh/setup-uv@f0ec1fc3b38f5e7cd731bb6ce540c5af426746bb # v6
-
-      - id: setup-python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
-
-      - run: |
-          uv run merge_requirements.py \
-            --requirements_in "${DATABRICKS_RUNTIME_VERSION}/requirements.in" \
-            --requirements_txt "${DATABRICKS_RUNTIME_VERSION}/requirements.txt" \
-            --requirements_out "${DATABRICKS_RUNTIME_VERSION}/requirements.in"
-
-      - run: bash update-requirements.sh
-
-      - run: docker compose run --rm update-requirements
-
   docker:
     permissions:
-      contents: write
       packages: write
-      security-events: write
 
     runs-on: ubuntu-latest
     env:
@@ -104,7 +77,6 @@ jobs:
   trivy:
     permissions:
       contents: write
-      packages: write
       security-events: write
 
     runs-on: ubuntu-latest
@@ -114,9 +86,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - run: |
-          docker compose build databricks-runtime
-          docker tag ${{ env.GHCR_IMAGE_NAME }}:main databricks-runtime
+      - run: docker compose build databricks-runtime
 
       - uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # 0.30
         with:
