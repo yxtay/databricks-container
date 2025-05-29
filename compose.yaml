@@ -1,0 +1,25 @@
+services:
+  databricks-runtime:
+    image: ghcr.io/yxtay/databricks-runtime-containers:main
+    build:
+      args:
+        BASE_IMAGE: ubuntu:24.04
+        DATABRICKS_RUNTIME_VERSION: 16.4
+        PYTHON_VERSION: 3.12
+      cache_from:
+        - ghcr.io/yxtay/databricks-runtime-containers:main
+
+  update-requirements:
+    image: ghcr.io/astral-sh/uv:debian-slim
+    platform: linux/amd64
+    environment:
+      UV_CUSTOM_COMPILE_COMMAND: docker compose run --rm update-requirements
+      DATABRICKS_RUNTIME_VERSION: 16.4
+      PYTHON_VERSION: 3.12
+      VIRTUAL_ENV: /.venv
+    working_dir: /root
+    volumes:
+      - .:/root
+    command:
+      - bash
+      - update-requirements.sh
