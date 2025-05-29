@@ -9,10 +9,7 @@ delta-spark~=3.2.0
 ipykernel~=6.29.5
 matplotlib~=3.10.3
 mlflow-skinny~=2.22.0
-numpy~=1.26.4
-pandas~=2.2.3
 pip~=25.1.1
-pyarrow~=20.0.0
 pyspark[connect]==3.5.2,~=3.5.2
 pyccolo~=0.0.72
 setuptools~=80.9.0
