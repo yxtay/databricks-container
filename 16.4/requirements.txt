@@ -8,7 +8,7 @@ asttokens~=3.0.0
     # via stack-data
 black[jupyter]~=25.1.0
     # via -r 16.4/requirements.in
-cachetools~=5.5.2
+cachetools~=6.0.0
     # via
     #   google-auth
     #   mlflow-skinny
