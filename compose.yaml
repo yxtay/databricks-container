@@ -11,7 +11,7 @@ services:
         - ghcr.io/yxtay/databricks-runtime-containers:cache
 
   update-requirements:
-    image: ghcr.io/astral-sh/uv:debian-slim
+    image: ghcr.io/astral-sh/uv:debian-slim@sha256:55abddedb08f077d4305551864b0b47e72495993c186ff74aa6a2d9dd1eca3aa
     platform: linux/amd64
     environment:
       UV_CUSTOM_COMPILE_COMMAND: docker compose run --rm update-requirements
