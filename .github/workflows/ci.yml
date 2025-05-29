@@ -71,13 +71,9 @@ jobs:
           cache-from: ${{ env.GHCR_IMAGE_NAME }}:cache
           load: true
 
-      - run: docker run ${IAMGE_ID} uv pip list
+      - run: docker run "${IAMGE_ID}" uv pip list
         env:
           IMAGE_ID: ${{ steps.build.outputs.imageid }}
-
-      - uses: github/codeql-action/upload-sarif@ff0a06e83cb2de871e5a09832bc6a81e7276941f # v3
-        with:
-          sarif_file: trivy-results.sarif
 
       - id: docker_metadata
         uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5
