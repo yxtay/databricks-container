@@ -71,7 +71,7 @@ jobs:
           cache-from: ${{ env.GHCR_IMAGE_NAME }}:cache
           load: true
 
-      - run: docker run "${IAMGE_ID}" uv pip list
+      - run: docker run "${IMAGE_ID}" uv pip list
         env:
           IMAGE_ID: ${{ steps.build.outputs.imageid }}
 
