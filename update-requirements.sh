@@ -2,7 +2,6 @@
 set -euxo pipefail
 
 DATABRICKS_RUNTIME_VERSION=${DATABRICKS_RUNTIME_VERSION:-16.4}
-VIRTUAL_ENV=${VIRTUAL_ENV:-.venv}
 export UV_PYTHON=${PYTHON_VERSION:-3.12}
 
 script_dir=$(dirname "$(readlink -f "$0")")

@@ -17,7 +17,6 @@ services:
       UV_CUSTOM_COMPILE_COMMAND: docker compose run --rm update-requirements
       DATABRICKS_RUNTIME_VERSION: 16.4
       PYTHON_VERSION: 3.12
-      VIRTUAL_ENV: /.venv
     working_dir: /root
     volumes:
       - .:/root
