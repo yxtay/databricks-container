@@ -14,7 +14,7 @@ sed -Ei 's/~=/>=/' "${requirements_in}"
 
 # compile requirements
 uv python install
-uv pip compile --no-strip-extras --upgrade --verbose \
+uv pip compile --no-strip-extras --upgrade \
   --index-strategy unsafe-best-match \
   "${requirements_in}" \
   --output-file "${requirements_txt}"
