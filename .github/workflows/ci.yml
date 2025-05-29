@@ -114,9 +114,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - run: |
-          docker compose build databricks-runtime
-          docker tag ${{ env.GHCR_IMAGE_NAME }}:main databricks-runtime
+      - run: docker compose build databricks-runtime
 
       - uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # 0.30
         with:

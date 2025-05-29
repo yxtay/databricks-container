@@ -1,25 +1,83 @@
 services:
   databricks-runtime:
-    image: ghcr.io/yxtay/databricks-runtime-containers:main
+    image: databricks-runtime:latest
+    build:
+      args:
+        UV_EXCLUDE_NEWER:
+
+  databricks-runtime-16.4:
+    image: databricks-runtime:16.4
     build:
       args:
         BASE_IMAGE: ubuntu:24.04
         DATABRICKS_RUNTIME_VERSION: 16.4
         JDK_VERSION: 17
-        PYTHON_VERSION: 3.12
-      cache_from:
-        - ghcr.io/yxtay/databricks-runtime-containers:cache
+        PYSPARK_VERSION: 3.5.2
+        PYTHON_VERSION: 3.12.3
+        UV_EXCLUDE_NEWER: "2025-05-09"
 
-  update-requirements:
-    image: ghcr.io/astral-sh/uv:debian-slim@sha256:55abddedb08f077d4305551864b0b47e72495993c186ff74aa6a2d9dd1eca3aa
-    platform: linux/amd64
-    environment:
-      UV_CUSTOM_COMPILE_COMMAND: docker compose run --rm update-requirements
-      DATABRICKS_RUNTIME_VERSION: 16.4
-      PYTHON_VERSION: 3.12
-    working_dir: /root
-    volumes:
-      - .:/root
-    command:
-      - bash
-      - update-requirements.sh
+  databricks-runtime-15.4:
+    image: databricks-runtime:15.4
+    build:
+      args:
+        BASE_IMAGE: ubuntu:22.04
+        DATABRICKS_RUNTIME_VERSION: 15.4
+        JDK_VERSION: 8
+        PYSPARK_VERSION: 3.5.0
+        PYTHON_VERSION: 3.11.11
+        UV_EXCLUDE_NEWER: "2024-08-19"
+
+  databricks-runtime-14.3:
+    image: databricks-runtime:14.3
+    build:
+      args:
+        BASE_IMAGE: ubuntu:22.04
+        DATABRICKS_RUNTIME_VERSION: 14.3
+        JDK_VERSION: 8
+        PYSPARK_VERSION: 3.5.0
+        PYTHON_VERSION: 3.10.12
+        UV_EXCLUDE_NEWER: "2024-02-01"
+
+  databricks-runtime-13.3:
+    image: databricks-runtime:13.3
+    build:
+      args:
+        BASE_IMAGE: ubuntu:22.04
+        DATABRICKS_RUNTIME_VERSION: 13.3
+        JDK_VERSION: 8
+        PYSPARK_VERSION: 3.4.1
+        PYTHON_VERSION: 3.10.12
+        UV_EXCLUDE_NEWER: "2023-08-22"
+
+  databricks-runtime-12.2:
+    image: databricks-runtime:12.2
+    build:
+      args:
+        BASE_IMAGE: ubuntu:20.04
+        DATABRICKS_RUNTIME_VERSION: 12.2
+        JDK_VERSION: 8
+        PYSPARK_VERSION: 3.3.2
+        PYTHON_VERSION: 3.9.21
+        UV_EXCLUDE_NEWER: "2023-03-01"
+
+  databricks-runtime-11.3:
+    image: databricks-runtime:11.3
+    build:
+      args:
+        BASE_IMAGE: ubuntu:20.04
+        DATABRICKS_RUNTIME_VERSION: 11.3
+        JDK_VERSION: 8
+        PYSPARK_VERSION: 3.3.0
+        PYTHON_VERSION: 3.9.21
+        UV_EXCLUDE_NEWER: "2022-10-19"
+
+  databricks-runtime-10.4:
+    image: databricks-runtime:10.4
+    build:
+      args:
+        BASE_IMAGE: ubuntu:20.04
+        DATABRICKS_RUNTIME_VERSION: 10.4
+        JDK_VERSION: 8
+        PYSPARK_VERSION: 3.2.1
+        PYTHON_VERSION: 3.8
+        UV_EXCLUDE_NEWER: "2022-03-18"

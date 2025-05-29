@@ -1,0 +1,17 @@
+###############################################
+# Minimal Requirements for Databricks Runtime #
+###############################################
+black[jupyter]
+databricks-sdk[notebook] ; python_version >= "3.10"
+delta-spark
+ipykernel
+matplotlib
+mlflow-skinny
+pip
+pyspark[connect]
+pyccolo
+setuptools
+#######################
+# Additional Packages #
+#######################
+torch
