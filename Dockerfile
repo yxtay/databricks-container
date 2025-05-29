@@ -6,7 +6,6 @@ FROM ${BASE_IMAGE} AS base
 ARG DATABRICKS_RUNTIME_VERSION=16.4
 ARG DEBIAN_FRONTEND=noninteractive
 ARG PIP_NO_CACHE_DIR=0
-ARG PYTHON_VERSION=3.12
 ARG PYTHONDONTWRITEBYTECODE=1
 ARG VIRTUAL_ENV=/databricks/python3
 
@@ -73,6 +72,7 @@ RUN curl -s https://repos.azul.com/azul-repo.key | gpg --dearmor -o /usr/share/k
     && rm -rf /var/lib/apt/lists/* \
     && java -version
 
+ARG PYTHON_VERSION=3.12
 ARG UV_NO_CACHE=1
 ENV UV_PYTHON=${PYTHON_VERSION} \
     UV_PYTHON_DOWNLOADS=manual \
@@ -92,7 +92,7 @@ FROM base AS runtime
 ARG requirements_in="${DATABRICKS_RUNTIME_VERSION}/requirements.in"
 RUN --mount=from=ghcr.io/astral-sh/uv:latest,source=/uv,target=/bin/uv \
     --mount=source="${requirements_in}",target=requirements.txt \
-    uv venv && \
+    uv venv ${VIRTUAL_ENV} && \
     uv pip install --requirements requirements.txt && \
     # pyspark is actually not required because it will be injected in databricks cluster
     # there are a number of vulnerabilities due to outdated jar files in pyspark
