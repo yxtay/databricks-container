@@ -2,7 +2,6 @@
 set -euxo pipefail
 
 DATABRICKS_RUNTIME_VERSION=${DATABRICKS_RUNTIME_VERSION:-16.4}
-export UV_PYTHON=${PYTHON_VERSION:-3.12}
 
 script_dir=$(dirname "$(readlink -f "$0")")
 requirements_in="${script_dir}/${DATABRICKS_RUNTIME_VERSION}/requirements.in"
@@ -12,7 +11,6 @@ requirements_txt="${script_dir}/${DATABRICKS_RUNTIME_VERSION}/requirements.txt"
 sed -Ei 's/~=/>=/' "${requirements_in}"
 
 # compile requirements
-uv python install
 uv pip compile --no-strip-extras --upgrade \
   --index-strategy unsafe-best-match \
   "${requirements_in}" \

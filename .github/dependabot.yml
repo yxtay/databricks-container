@@ -22,7 +22,9 @@ updates:
         update-types: [minor, patch]
 
   - package-ecosystem: pip
-    directory: /
+    directories:
+      - /
+      - /*
     schedule:
       interval: daily
     commit-message:
