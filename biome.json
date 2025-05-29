@@ -1,0 +1,4 @@
+{
+  "$schema": "https://biomejs.dev/schemas/latest/schema.json",
+  "formatter": { "useEditorconfig": true }
+}
