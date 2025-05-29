@@ -11,6 +11,16 @@ updates:
       docker:
         update-types: [minor, patch]
 
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: build(docker-compose)
+    groups:
+      docker:
+        update-types: [minor, patch]
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
@@ -19,18 +29,6 @@ updates:
       prefix: ci(github-actions)
     groups:
       github-actions:
-        update-types: [minor, patch]
-
-  - package-ecosystem: pip
-    directories:
-      - /
-      - /*
-    schedule:
-      interval: daily
-    commit-message:
-      prefix: build(pip)
-    groups:
-      pip:
         update-types: [minor, patch]
 
   - package-ecosystem: uv

@@ -128,7 +128,6 @@ networkx~=3.4.2
     # via torch
 numpy~=1.26.4
     # via
-    #   -r 16.4/requirements.in
     #   contourpy
     #   matplotlib
     #   pandas
@@ -186,9 +185,7 @@ packaging~=24.2
     #   matplotlib
     #   mlflow-skinny
 pandas~=2.2.3
-    # via
-    #   -r 16.4/requirements.in
-    #   pyspark
+    # via pyspark
 parso~=0.8.4
     # via jedi
 pathspec~=0.12.1
@@ -219,9 +216,7 @@ pure-eval~=0.2.3
 py4j~=0.10.9.7
     # via pyspark
 pyarrow~=20.0.0
-    # via
-    #   -r 16.4/requirements.in
-    #   pyspark
+    # via pyspark
 pyasn1~=0.6.1
     # via
     #   pyasn1-modules
@@ -308,6 +303,7 @@ triton~=3.3.0
     # via torch
 typing-extensions~=4.13.2
     # via
+    #   anyio
     #   fastapi
     #   mlflow-skinny
     #   opentelemetry-sdk
