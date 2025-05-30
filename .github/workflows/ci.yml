@@ -73,8 +73,8 @@ jobs:
           set: |
             ${{ matrix.target }}.tags=${{ env.IMAGE_TAG }}
             ${{ matrix.target }}.cache-from=${{ env.IMAGE_TAG }}
-            ${{ matrix.target }}.labels=${{ steps.docker_metadata.outputs.labels }}
-            ${{ matrix.target }}.annotations=${{ steps.docker_metadata.outputs.annotations }}
+            ${{ matrix.target }}.labels=${{ join(steps.docker_metadata.outputs.labels, ',') }}
+            ${{ matrix.target }}.annotations=${{ join(steps.docker_metadata.outputs.annotations, ',') }}
 
       - run: docker run "${IMAGE_TAG}" uv pip list
 
