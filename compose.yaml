@@ -80,3 +80,14 @@ services:
         PYSPARK_VERSION: 3.2.1
         PYTHON_VERSION: 3.8
         UV_EXCLUDE_NEWER: "2022-03-18"
+
+  databricks-runtime-9_1:
+    image: databricks-runtime:9.4
+    build:
+      args:
+        BASE_IMAGE: ubuntu:20.04
+        DATABRICKS_RUNTIME_VERSION: 9.4
+        JDK_VERSION: 8
+        PYSPARK_VERSION: 3.1.2
+        PYTHON_VERSION: 3.8
+        UV_EXCLUDE_NEWER: "2021-09-23"
