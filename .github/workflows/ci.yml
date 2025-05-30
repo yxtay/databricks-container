@@ -46,7 +46,9 @@ jobs:
         run: |
           target="${{ matrix.target }}"
           tag="${target#databricks-runtime}"
-          tag="${${${tag/-/}/_/.}:-main}"
+          tag="${tag/-/}"
+          tag="${${tag/_/.}:-main}"
+          tag="${tag:-main}"
           echo "IMAGE_TAG=${IMAGE_NAME}:${tag}" >> "${GITHUB_ENV}"
 
       - if: ${{ env.PUSH_MAIN }}
