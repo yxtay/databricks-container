@@ -18,16 +18,42 @@ concurrency:
   cancel-in-progress: ${{ github.ref_name != github.event.repository.default_branch }}
 
 jobs:
+  list-targets:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - uses: docker/bake-action/subaction/list-targets@v6
+
+  docker-bake:
+    needs: [list-targets]
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJson(needs.list-targets.outputs.targets) }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: |
+          tag=${}
+          echo "tag=${tag}" >> "${GITHUB_OUTPUT}"
+        env:
+          TARGET: ${{ matrix.target }}
+
+      - uses: docker/bake-action@v6
+        with:
+          targets: ${{ matrix.target }}
+
   docker:
     permissions:
       packages: write
 
     runs-on: ubuntu-latest
     env:
-      BASE_IMAGE: ubuntu:24.04
-      DATABRICKS_RUNTIME_VERSION: 16.4
       GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
-      PYTHON_VERSION: 3.12
 
     steps:
       - uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3
@@ -37,10 +63,6 @@ jobs:
       - id: build
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
         with:
-          build-args: |
-            BASE_IMAGE=${{ env.BASE_IMAGE }}
-            DATABRICKS_RUNTIME_VERSION=${{ env.DATABRICKS_RUNTIME_VERSION }}
-            PYTHON_VERSION=${{ env.PYTHON_VERSION }}
           cache-from: ${{ env.GHCR_IMAGE_NAME }}:cache
           load: true
 
@@ -104,6 +126,7 @@ jobs:
           severity: HIGH,CRITICAL
           format: sarif
           output: trivy-results.sarif
+          scanners: vuln
 
       - uses: github/codeql-action/upload-sarif@ff0a06e83cb2de871e5a09832bc6a81e7276941f # v3
         with:

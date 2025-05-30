@@ -2,8 +2,7 @@ services:
   databricks-runtime:
     image: databricks-runtime:latest
     build:
-      args:
-        UV_EXCLUDE_NEWER:
+      context: .
 
   databricks-runtime-16.4:
     image: databricks-runtime:16.4
@@ -13,7 +12,7 @@ services:
         DATABRICKS_RUNTIME_VERSION: 16.4
         JDK_VERSION: 17
         PYSPARK_VERSION: 3.5.2
-        PYTHON_VERSION: 3.12.3
+        PYTHON_VERSION: 3.12
         UV_EXCLUDE_NEWER: "2025-05-09"
 
   databricks-runtime-15.4:
@@ -24,7 +23,7 @@ services:
         DATABRICKS_RUNTIME_VERSION: 15.4
         JDK_VERSION: 8
         PYSPARK_VERSION: 3.5.0
-        PYTHON_VERSION: 3.11.11
+        PYTHON_VERSION: 3.11
         UV_EXCLUDE_NEWER: "2024-08-19"
 
   databricks-runtime-14.3:
@@ -35,7 +34,7 @@ services:
         DATABRICKS_RUNTIME_VERSION: 14.3
         JDK_VERSION: 8
         PYSPARK_VERSION: 3.5.0
-        PYTHON_VERSION: 3.10.12
+        PYTHON_VERSION: 3.10
         UV_EXCLUDE_NEWER: "2024-02-01"
 
   databricks-runtime-13.3:
@@ -46,7 +45,7 @@ services:
         DATABRICKS_RUNTIME_VERSION: 13.3
         JDK_VERSION: 8
         PYSPARK_VERSION: 3.4.1
-        PYTHON_VERSION: 3.10.12
+        PYTHON_VERSION: 3.10
         UV_EXCLUDE_NEWER: "2023-08-22"
 
   databricks-runtime-12.2:
@@ -57,7 +56,7 @@ services:
         DATABRICKS_RUNTIME_VERSION: 12.2
         JDK_VERSION: 8
         PYSPARK_VERSION: 3.3.2
-        PYTHON_VERSION: 3.9.21
+        PYTHON_VERSION: 3.9
         UV_EXCLUDE_NEWER: "2023-03-01"
 
   databricks-runtime-11.3:
@@ -68,7 +67,7 @@ services:
         DATABRICKS_RUNTIME_VERSION: 11.3
         JDK_VERSION: 8
         PYSPARK_VERSION: 3.3.0
-        PYTHON_VERSION: 3.9.21
+        PYTHON_VERSION: 3.9
         UV_EXCLUDE_NEWER: "2022-10-19"
 
   databricks-runtime-10.4:
