@@ -22,12 +22,13 @@ jobs:
 
     runs-on: ubuntu-latest
     outputs:
-      targets: ${{ steps.generate.outputs.targets }}
+      targets: ${{ steps.list-target.outputs.targets }}
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - uses: docker/bake-action/subaction/list-targets@v6
+      - id: list-target
+        uses: docker/bake-action/subaction/list-targets@v6
 
   docker-bake:
     needs: [list-targets]
