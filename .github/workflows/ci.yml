@@ -45,9 +45,13 @@ jobs:
       - id: tag
         run: |
           target="${{ matrix.target }}"
+          # strip prefix
           tag="${target#databricks-runtime}"
-          tag="${tag/-/}"
-          tag="${${tag/_/.}:-main}"
+          # strip dash
+          tag="${tag#-}"
+          # replace underscore with dot
+          tag="${tag/_/.}"
+          # set default tag
           tag="${tag:-main}"
           echo "IMAGE_TAG=${IMAGE_NAME}:${tag}" >> "${GITHUB_ENV}"
 

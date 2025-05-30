@@ -4,7 +4,7 @@ services:
     build:
       context: .
 
-  databricks-runtime-16.4:
+  databricks-runtime-16_4:
     image: databricks-runtime:16.4
     build:
       args:
@@ -15,7 +15,7 @@ services:
         PYTHON_VERSION: 3.12
         UV_EXCLUDE_NEWER: "2025-05-09"
 
-  databricks-runtime-15.4:
+  databricks-runtime-15_4:
     image: databricks-runtime:15.4
     build:
       args:
@@ -26,7 +26,7 @@ services:
         PYTHON_VERSION: 3.11
         UV_EXCLUDE_NEWER: "2024-08-19"
 
-  databricks-runtime-14.3:
+  databricks-runtime-14_3:
     image: databricks-runtime:14.3
     build:
       args:
@@ -37,7 +37,7 @@ services:
         PYTHON_VERSION: 3.10
         UV_EXCLUDE_NEWER: "2024-02-01"
 
-  databricks-runtime-13.3:
+  databricks-runtime-13_3:
     image: databricks-runtime:13.3
     build:
       args:
@@ -48,7 +48,7 @@ services:
         PYTHON_VERSION: 3.10
         UV_EXCLUDE_NEWER: "2023-08-22"
 
-  databricks-runtime-12.2:
+  databricks-runtime-12_2:
     image: databricks-runtime:12.2
     build:
       args:
@@ -59,7 +59,7 @@ services:
         PYTHON_VERSION: 3.9
         UV_EXCLUDE_NEWER: "2023-03-01"
 
-  databricks-runtime-11.3:
+  databricks-runtime-11_3:
     image: databricks-runtime:11.3
     build:
       args:
@@ -70,7 +70,7 @@ services:
         PYTHON_VERSION: 3.9
         UV_EXCLUDE_NEWER: "2022-10-19"
 
-  databricks-runtime-10.4:
+  databricks-runtime-10_4:
     image: databricks-runtime:10.4
     build:
       args:
