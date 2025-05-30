@@ -71,7 +71,6 @@ jobs:
           load: true
           push: ${{ env.PUSH_MAIN }}
           provenance: true
-          sbom: true
           set: |
             ${{ matrix.target }}.tags=${{ env.IMAGE_TAG }}
             ${{ matrix.target }}.cache-from=${{ env.IMAGE_TAG }}
@@ -101,7 +100,6 @@ jobs:
           cache-from: ${{ env.IMAGE_NAME }}:main
           load: true
           provenance: true
-          sbom: true
           tags: ${{ steps.docker_metadata.outputs.tags }}
           labels: ${{ steps.docker_metadata.outputs.labels }}
           annotations: ${{ steps.docker_metadata.outputs.annotations }}
