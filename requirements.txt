@@ -1,13 +1,13 @@
 ###############################################
 # Minimal Requirements for Databricks Runtime #
 ###############################################
-black[jupyter] ; python_version >= "3.9"
+black[jupyter] ; python_version
 databricks-sdk[notebook] ; python_version >= "3.10"
 ipykernel
 matplotlib
 pip
 pyccolo ; python_version >= "3.11"
-pyspark[connect]
+pyspark[connect,ml,sql]
 setuptools
 #######################
 # Additional Packages #
