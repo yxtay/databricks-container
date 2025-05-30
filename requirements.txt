@@ -7,7 +7,7 @@ ipykernel
 matplotlib
 pip
 pyccolo ; python_version >= "3.11"
-pyspark[connect,ml,sql]
+pyspark[connect,sql]
 setuptools
 #######################
 # Additional Packages #
