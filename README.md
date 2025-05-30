@@ -5,6 +5,6 @@ The dockerfile is based on the official
 Installed ubuntu packages and python libraries are kept to the minimum required
 to be used for Databricks Container Services and support the necessary features.
 
-The containers from Databricks Runtime 14.3 has been tested and verified to work.
-They are suitable to be used as base images
-to install libraries required for you use cases.
+The containers have been tested and verified to work. 
+They are suitable to be used as base images 
+to install libraries required for your use cases.
