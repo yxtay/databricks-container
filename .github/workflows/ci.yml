@@ -78,9 +78,10 @@ jobs:
 
       - run: docker run "${IMAGE_TAG}" uv pip list
 
-  docker:
+  trivy:
     permissions:
-      packages: write
+      contents: write
+      security-events: write
 
     runs-on: ubuntu-latest
     env:
@@ -94,56 +95,12 @@ jobs:
       - id: build
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
         with:
-          cache-from: ${{ env.GHCR_IMAGE_NAME }}:cache
+          cache-from: ${{ env.GHCR_IMAGE_NAME }}:main
           load: true
-
-      - run: docker run "${IMAGE_ID}" uv pip list
-        env:
-          IMAGE_ID: ${{ steps.build.outputs.imageid }}
-
-      - id: docker_metadata
-        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5
-        with:
-          images: ${{ env.GHCR_IMAGE_NAME }}
-
-      - if: ${{ github.event_name == 'push' || github.ref_name == github.event.repository.default_branch }}
-        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ github.token }}
-
-      - if: ${{ github.event_name == 'push' || github.ref_name == github.event.repository.default_branch }}
-        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
-        with:
-          build-args: |
-            BASE_IMAGE=${{ env.BASE_IMAGE }}
-            DATABRICKS_RUNTIME_VERSION=${{ env.DATABRICKS_RUNTIME_VERSION }}
-            PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-          cache-from: ${{ env.GHCR_IMAGE_NAME }}:cache
-          cache-to: type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:cache,mode=max
-          tags: ${{ steps.docker_metadata.outputs.tags }}
-          labels: ${{ steps.docker_metadata.outputs.labels }}
-          annotations: ${{ steps.docker_metadata.outputs.annotations }}
-          push: ${{ github.event_name == 'push' || github.ref_name == github.event.repository.default_branch }}
-
-  trivy:
-    permissions:
-      contents: write
-      security-events: write
-
-    runs-on: ubuntu-latest
-    env:
-      GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
-
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-
-      - run: docker compose build databricks-runtime
 
       - uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # 0.30
         with:
-          image-ref: databricks-runtime
+          image-ref: ${{ steps.build.outputs.imageid }}
           ignore-unfixed: true
           severity: HIGH,CRITICAL
           format: github
@@ -152,7 +109,7 @@ jobs:
 
       - uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # 0.30
         with:
-          image-ref: databricks-runtime
+          image-ref: ${{ steps.build.outputs.imageid }}
           ignore-unfixed: true
           severity: HIGH,CRITICAL
           format: sarif
