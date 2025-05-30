@@ -31,6 +31,9 @@ jobs:
         uses: docker/bake-action/subaction/list-targets@37816e747588cb137173af99ab33873600c46ea8 # v6
 
   docker-bake:
+    permissions:
+      packages: write
+
     needs: [list-targets]
     strategy:
       fail-fast: false
@@ -69,7 +72,7 @@ jobs:
         with:
           targets: ${{ matrix.target }}
           load: true
-          push: ${{ env.PUSH_MAIN }}
+          push: true
           set: |
             ${{ matrix.target }}.tags=${{ env.IMAGE_TAG }}
             ${{ matrix.target }}.cache-from=${{ env.IMAGE_TAG }}
