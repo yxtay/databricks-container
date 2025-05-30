@@ -30,6 +30,7 @@ ENV DATABRICKS_RUNTIME_VERSION=${DATABRICKS_RUNTIME_VERSION} \
     USER=root \
     VIRTUAL_ENV=${VIRTUAL_ENV}
 
+WORKDIR /root
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
 COPY <<-EOF /etc/apt/apt.conf.d/99-disable-recommends
@@ -61,8 +62,7 @@ RUN apt-get update && \
     openssh-server \
     # table acl
     acl \
-    iptables \
-    # misc
+    # build
     build-essential \
     && \
     rm -rf /var/lib/apt/lists/* && \
@@ -72,7 +72,6 @@ RUN apt-get update && \
     # Warning: you still need to start the ssh process with `sudo service ssh start`
     id -u ubuntu || useradd --shell /bin/bash --groups sudo ubuntu
 
-# install zulu java instead of openjdk due to license issues https://stackoverflow.com/a/61337953
 # https://docs.azul.com/core/install/debian
 RUN curl -s https://repos.azul.com/azul-repo.key | gpg --dearmor -o /usr/share/keyrings/azul.gpg && \
     echo "deb [signed-by=/usr/share/keyrings/azul.gpg] https://repos.azul.com/zulu/deb stable main" | tee /etc/apt/sources.list.d/zulu.list && \
