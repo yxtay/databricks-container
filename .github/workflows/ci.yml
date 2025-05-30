@@ -105,6 +105,10 @@ jobs:
           labels: ${{ steps.docker_metadata.outputs.labels }}
           annotations: ${{ steps.docker_metadata.outputs.annotations }}
 
+      - run: docker run "${IMAGE_ID}" uv pip list
+        env:
+          IMAGE_ID: ${{ steps.build.outputs.imageid }}
+
       - uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # 0.30
         with:
           image-ref: ${{ steps.build.outputs.imageid }}
