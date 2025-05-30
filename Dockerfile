@@ -67,8 +67,7 @@ RUN apt-get update && \
     && \
     rm -rf /var/lib/apt/lists/* && \
     # Add new user forexit cluster library installation
-    useradd libraries && \
-    usermod -L libraries && \
+    useradd libraries && usermod --lock libraries && \
     # Warning: the created user has root permissions inside the container
     # Warning: you still need to start the ssh process with `sudo service ssh start`
     id -u ubuntu || useradd --shell /bin/bash --groups sudo ubuntu

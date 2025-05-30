@@ -18,61 +18,63 @@ concurrency:
   cancel-in-progress: ${{ github.ref_name != github.event.repository.default_branch }}
 
 jobs:
-  docker:
-    permissions:
-      packages: write
+  list-targets:
+
+    runs-on: ubuntu-latest
+    outputs:
+      targets: ${{ steps.list-target.outputs.targets }}
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - id: list-target
+        uses: docker/bake-action/subaction/list-targets@37816e747588cb137173af99ab33873600c46ea8 # v6
+
+  docker-bake:
+    needs: [list-targets]
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJson(needs.list-targets.outputs.targets) }}
 
     runs-on: ubuntu-latest
     env:
-      BASE_IMAGE: ubuntu:24.04
-      DATABRICKS_RUNTIME_VERSION: 16.4
-      GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
-      PYTHON_VERSION: 3.12
-
+      IMAGE_NAME: ghcr.io/${{ github.repository }}
+      PUSH_MAIN: ${{ github.event_name == 'push' || github.ref_name == github.event.repository.default_branch }}
     steps:
+      - run: |
+          target="${{ matrix.target }}"
+          # strip prefix
+          tag="${target#databricks-runtime}"
+          # strip dash
+          tag="${tag#-}"
+          # replace underscore with dot
+          tag="${tag/_/.}"
+          # set default tag
+          tag="${tag:-main}"
+          echo "IMAGE_TAG=${IMAGE_NAME}:${tag}" >> "${GITHUB_ENV}"
+
       - uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3
 
       - uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
 
-      - id: build
-        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
-        with:
-          build-args: |
-            BASE_IMAGE=${{ env.BASE_IMAGE }}
-            DATABRICKS_RUNTIME_VERSION=${{ env.DATABRICKS_RUNTIME_VERSION }}
-            PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-          cache-from: ${{ env.GHCR_IMAGE_NAME }}:cache
-          load: true
-
-      - run: docker run "${IMAGE_ID}" uv pip list
-        env:
-          IMAGE_ID: ${{ steps.build.outputs.imageid }}
-
-      - id: docker_metadata
-        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5
-        with:
-          images: ${{ env.GHCR_IMAGE_NAME }}
-
-      - if: ${{ github.event_name == 'push' || github.ref_name == github.event.repository.default_branch }}
+      - if: ${{ env.PUSH_MAIN }}
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ github.token }}
 
-      - if: ${{ github.event_name == 'push' || github.ref_name == github.event.repository.default_branch }}
-        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
+      - uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6
         with:
-          build-args: |
-            BASE_IMAGE=${{ env.BASE_IMAGE }}
-            DATABRICKS_RUNTIME_VERSION=${{ env.DATABRICKS_RUNTIME_VERSION }}
-            PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-          cache-from: ${{ env.GHCR_IMAGE_NAME }}:cache
-          cache-to: type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:cache,mode=max
-          tags: ${{ steps.docker_metadata.outputs.tags }}
-          labels: ${{ steps.docker_metadata.outputs.labels }}
-          annotations: ${{ steps.docker_metadata.outputs.annotations }}
-          push: ${{ github.event_name == 'push' || github.ref_name == github.event.repository.default_branch }}
+          targets: ${{ matrix.target }}
+          load: true
+          push: ${{ env.PUSH_MAIN }}
+          set: |
+            ${{ matrix.target }}.tags=${{ env.IMAGE_TAG }}
+            ${{ matrix.target }}.cache-from=${{ env.IMAGE_TAG }}
+
+      - run: docker run "${IMAGE_TAG}" uv pip list
 
   trivy:
     permissions:
@@ -81,16 +83,28 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
+      IMAGE_NAME: ghcr.io/${{ github.repository }}
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3
 
-      - run: docker compose build databricks-runtime
+      - uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
+
+      - id: docker_metadata
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5
+
+      - id: build
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
+        with:
+          cache-from: ${{ env.IMAGE_NAME }}:main
+          load: true
+          tags: ${{ steps.docker_metadata.outputs.tags }}
+          labels: ${{ steps.docker_metadata.outputs.labels }}
+          annotations: ${{ steps.docker_metadata.outputs.annotations }}
 
       - uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # 0.30
         with:
-          image-ref: databricks-runtime
+          image-ref: ${{ steps.build.outputs.imageid }}
           ignore-unfixed: true
           severity: HIGH,CRITICAL
           format: github
@@ -99,11 +113,12 @@ jobs:
 
       - uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # 0.30
         with:
-          image-ref: databricks-runtime
+          image-ref: ${{ steps.build.outputs.imageid }}
           ignore-unfixed: true
           severity: HIGH,CRITICAL
           format: sarif
           output: trivy-results.sarif
+          scanners: vuln
 
       - uses: github/codeql-action/upload-sarif@ff0a06e83cb2de871e5a09832bc6a81e7276941f # v3
         with:
