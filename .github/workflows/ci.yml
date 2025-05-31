@@ -87,8 +87,6 @@ jobs:
         with:
           targets: ${{ matrix.target }}
           push: ${{ env.PUSH_IMAGE }}
-          provenance: true
-          sbom: true
 
       - run: docker run "${IMAGE_NAME}" uv pip list
         env:
