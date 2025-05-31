@@ -91,7 +91,7 @@ jobs:
 
       - run: docker run "${IMAGE_TAG}" uv pip list
         env:
-          IMAGE_NAME: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target]['image.name'] }}
+          IMAGE_NAME: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target]['containerimage.digest'] }}
 
   trivy-fs:
     permissions:
