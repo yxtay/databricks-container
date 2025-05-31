@@ -16,8 +16,8 @@ on:
         required: false
         default: false
         type: boolean
-      tag:
-        description: Tag to build
+      target:
+        description: Bake target
         required: false
         default: ""
         type: string
@@ -29,8 +29,8 @@ on:
         required: false
         default: false
         type: boolean
-      tag:
-        description: Tag to build
+      target:
+        description: Bake target
         required: false
         default: ""
         type: string
@@ -43,7 +43,7 @@ concurrency:
 
 jobs:
   bake-targets:
-    if: ${{ inputs.tag == '' }}
+    if: ${{ inputs.target == '' }}
 
     runs-on: ubuntu-latest
     outputs:
@@ -63,7 +63,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: ${{ inputs.tag || fromJson(needs.bake-targets.outputs.targets) }}
+        target: ${{ inputs.target || fromJson(needs.bake-targets.outputs.targets) }}
 
     runs-on: ubuntu-latest
     env:
