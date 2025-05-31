@@ -88,9 +88,6 @@ jobs:
           targets: ${{ matrix.target }}
           load: true
           push: ${{ env.PUSH_IMAGE }}
-          set: |
-            ${{ matrix.target }}.tags=${{ env.IMAGE_TAG }}
-            ${{ matrix.target }}.cache-from=${{ env.IMAGE_TAG }}
 
       - run: docker run "${IMAGE_TAG}" uv pip list
 
