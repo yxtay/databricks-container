@@ -16,11 +16,6 @@ on:
         required: false
         default: false
         type: boolean
-      target:
-        description: Bake target
-        required: false
-        default: ""
-        type: string
 
   workflow_dispatch:
     inputs:
@@ -29,11 +24,6 @@ on:
         required: false
         default: false
         type: boolean
-      target:
-        description: Bake target
-        required: false
-        default: ""
-        type: string
 
 permissions: {}
 
@@ -61,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: ${{ inputs.target || fromJson(needs.bake-targets.outputs.targets) }}
+        target: ${{ fromJson(needs.bake-targets.outputs.targets) }}
 
     runs-on: ubuntu-latest
     env:
