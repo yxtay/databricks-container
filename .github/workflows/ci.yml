@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: ghcr.io/${{ github.repository }}
-      PUSH_IMAGE: ${{ github.event_name == 'push' || inputs.push_image }}
+      PUSH_IMAGE: ${{ github.event_name == 'push' || inputs.push_image || false }}
     steps:
       - run: |
           target="${{ matrix.target }}"
