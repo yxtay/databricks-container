@@ -52,10 +52,6 @@ RUN apt-get update && \
     iproute2 \
     procps \
     sudo \
-    # zulu java
-    ca-certificates \
-    curl \
-    gnupg \
     # dbfsfuse
     fuse \
     # ssh
