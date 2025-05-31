@@ -11,4 +11,8 @@ to install libraries required for your use cases.
 
 ## Availabe Images
 
+For available image tags, please refer to the [compose.yaml](compose.yaml) file.
+
+Or the repository container below.
+
 https://github.com/yxtay/databricks-container/pkgs/container/databricks-container
