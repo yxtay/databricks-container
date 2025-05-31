@@ -81,9 +81,7 @@ jobs:
           tag="${tag:-main}"
 
           target_tag="${{ inputs.tag }}"
-          if [[ "${tag}" != "${target_tag:-${tag}}" ]]; then
-            exit(0)
-          fi
+          if [[ "${tag}" != "${target_tag:-${tag}}" ]]; then exit(0); fi
 
           echo "IMAGE_TAG=${IMAGE_NAME}:${tag}" >> "${GITHUB_ENV}"
 
