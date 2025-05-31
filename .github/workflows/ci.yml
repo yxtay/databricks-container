@@ -43,8 +43,6 @@ concurrency:
 
 jobs:
   bake-targets:
-    if: ${{ inputs.target == '' }}
-
     runs-on: ubuntu-latest
     outputs:
       targets: ${{ steps.bake-targets.outputs.targets }}
