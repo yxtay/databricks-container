@@ -66,7 +66,6 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: ghcr.io/${{ github.repository }}
       PUSH_IMAGE: ${{ inputs.push_image || github.event_name == 'push' }}
     steps:
       - if: ${{ inputs.tag != '' && inputs.tag != matrix.target }}
@@ -83,13 +82,16 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ github.token }}
 
-      - uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6
+      - id: bake
+        uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6
         with:
           targets: ${{ matrix.target }}
           load: true
           push: ${{ env.PUSH_IMAGE }}
 
       - run: docker run "${IMAGE_TAG}" uv pip list
+        env:
+          IMAGE_NAME: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target].image.name }}
 
   trivy-fs:
     permissions:
