@@ -8,7 +8,3 @@ to be used for Databricks Container Service and support the necessary features.
 The container images have been tested and verified to work.
 They are suitable to be used as base images
 to install libraries required for your use cases.
-
-## Available Images
-
-https://github.com/yxtay/databricks-container/pkgs/container/databricks-container
