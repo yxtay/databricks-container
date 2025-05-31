@@ -12,28 +12,18 @@ on:
   workflow_call:
     inputs:
       push_image:
-        description: Push image to registry
+        description: Push image
         required: false
         default: false
         type: boolean
-      tag:
-        description: Target image tag
-        required: false
-        default: ""
-        type: string
 
   workflow_dispatch:
     inputs:
       push_image:
-        description: Push image to registry
+        description: Push image
         required: false
         default: false
         type: boolean
-      tag:
-        description: Target image tag
-        required: false
-        default: ""
-        type: string
 
 permissions: {}
 
@@ -43,7 +33,6 @@ concurrency:
 
 jobs:
   bake-targets:
-
     runs-on: ubuntu-latest
     outputs:
       targets: ${{ steps.bake-targets.outputs.targets }}
@@ -66,46 +55,29 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: ghcr.io/${{ github.repository }}
       PUSH_IMAGE: ${{ inputs.push_image || github.event_name == 'push' }}
     steps:
-      - run: |
-          target="${{ matrix.target }}"
-          # strip prefix
-          tag="${target#databricks-container}"
-          # strip dash
-          tag="${tag#-}"
-          # replace underscore with dot
-          tag="${tag/_/.}"
-          # set default tag
-          tag="${tag:-main}"
-
-          target_tag="${{ inputs.tag }}"
-          if [[ "${tag}" != "${target_tag:-${tag}}" ]]; then exit; fi
-
-          echo "IMAGE_TAG=${IMAGE_NAME}:${tag}" >> "${GITHUB_ENV}"
-
       - uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3
 
       - uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
 
-      - if: ${{ env.PUSH_IMAGE }}
+      - if: ${{ env.PUSH_IMAGE == 'true' }}
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ github.token }}
 
-      - uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6
+      - id: bake
+        uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6
         with:
           targets: ${{ matrix.target }}
           load: true
           push: ${{ env.PUSH_IMAGE }}
-          set: |
-            ${{ matrix.target }}.tags=${{ env.IMAGE_TAG }}
-            ${{ matrix.target }}.cache-from=${{ env.IMAGE_TAG }}
 
       - run: docker run "${IMAGE_TAG}" uv pip list
+        env:
+          IMAGE_TAG: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target]['image.name'] }}
 
   trivy-fs:
     permissions:
