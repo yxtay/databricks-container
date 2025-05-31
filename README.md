@@ -1,4 +1,4 @@
-# Minimal Container Image for Databricks Container Service
+# Minimal Container Images for Databricks Container Service
 
 The dockerfile is based on the official
 [databricks/containers](https://github.com/databricks/containers) repository.
