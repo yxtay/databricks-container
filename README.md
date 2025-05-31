@@ -13,6 +13,4 @@ to install libraries required for your use cases.
 
 For available image tags, please refer to the [compose.yaml](compose.yaml) file.
 
-Or the repository container below.
-
-<https://ghcr.io/yxtay/databricks-container>
+Or the container registry: <https://ghcr.io/yxtay/databricks-container>
