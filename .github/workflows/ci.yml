@@ -86,11 +86,12 @@ jobs:
         uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6
         with:
           targets: ${{ matrix.target }}
+          load: true
           push: ${{ env.PUSH_IMAGE }}
 
-      - run: docker run "${IMAGE_NAME}" uv pip list
+      - run: docker run "${IMAGE_TAG}" uv pip list
         env:
-          IMAGE_NAME: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target]['image.name'] }}
+          IMAGE_TAG: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target]['image.name'] }}
 
   trivy-fs:
     permissions:
