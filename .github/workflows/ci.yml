@@ -16,6 +16,11 @@ on:
         required: false
         default: false
         type: boolean
+      tag:
+        description: Tag to build
+        required: false
+        default: ""
+        type: string
 
   workflow_dispatch:
     inputs:
@@ -24,6 +29,11 @@ on:
         required: false
         default: false
         type: boolean
+      tag:
+        description: Tag to build
+        required: false
+        default: ""
+        type: string
 
 permissions: {}
 
@@ -33,6 +43,7 @@ concurrency:
 
 jobs:
   bake-targets:
+    if: ${{ inputs.tag == '' }}
 
     runs-on: ubuntu-latest
     outputs:
@@ -52,7 +63,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: ${{ fromJson(needs.bake-targets.outputs.targets) }}
+        target: ${{ inputs.tag || fromJson(needs.bake-targets.outputs.targets) }}
 
     runs-on: ubuntu-latest
     env:
