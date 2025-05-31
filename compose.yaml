@@ -1,11 +1,11 @@
 services:
-  databricks-runtime:
-    image: databricks-runtime:latest
+  databricks-container:
+    image: databricks-container:latest
     build:
       context: .
 
-  databricks-runtime-16_4:
-    image: databricks-runtime:16.4
+  databricks-container-16_4:
+    image: databricks-container:16.4
     build:
       args:
         BASE_IMAGE: ubuntu:24.04
@@ -15,8 +15,8 @@ services:
         PYTHON_VERSION: 3.12
         UV_EXCLUDE_NEWER: "2025-05-09"
 
-  databricks-runtime-15_4:
-    image: databricks-runtime:15.4
+  databricks-container-15_4:
+    image: databricks-container:15.4
     build:
       args:
         BASE_IMAGE: ubuntu:22.04
@@ -26,8 +26,8 @@ services:
         PYTHON_VERSION: 3.11
         UV_EXCLUDE_NEWER: "2024-08-19"
 
-  databricks-runtime-14_3:
-    image: databricks-runtime:14.3
+  databricks-container-14_3:
+    image: databricks-container:14.3
     build:
       args:
         BASE_IMAGE: ubuntu:22.04
@@ -37,8 +37,8 @@ services:
         PYTHON_VERSION: "3.10"
         UV_EXCLUDE_NEWER: "2024-02-01"
 
-  databricks-runtime-13_3:
-    image: databricks-runtime:13.3
+  databricks-container-13_3:
+    image: databricks-container:13.3
     build:
       args:
         BASE_IMAGE: ubuntu:22.04
@@ -48,8 +48,8 @@ services:
         PYTHON_VERSION: "3.10"
         UV_EXCLUDE_NEWER: "2023-08-22"
 
-  databricks-runtime-12_2:
-    image: databricks-runtime:12.2
+  databricks-container-12_2:
+    image: databricks-container:12.2
     build:
       args:
         BASE_IMAGE: ubuntu:20.04
@@ -59,8 +59,8 @@ services:
         PYTHON_VERSION: 3.9
         UV_EXCLUDE_NEWER: "2023-03-01"
 
-  databricks-runtime-11_3:
-    image: databricks-runtime:11.3
+  databricks-container-11_3:
+    image: databricks-container:11.3
     build:
       args:
         BASE_IMAGE: ubuntu:20.04
@@ -70,8 +70,8 @@ services:
         PYTHON_VERSION: 3.9
         UV_EXCLUDE_NEWER: "2022-10-19"
 
-  databricks-runtime-10_4:
-    image: databricks-runtime:10.4
+  databricks-container-10_4:
+    image: databricks-container:10.4
     build:
       args:
         BASE_IMAGE: ubuntu:20.04
@@ -81,8 +81,8 @@ services:
         PYTHON_VERSION: 3.8
         UV_EXCLUDE_NEWER: "2022-03-18"
 
-  databricks-runtime-9_1:
-    image: databricks-runtime:9.4
+  databricks-container-9_1:
+    image: databricks-container:9.4
     build:
       args:
         BASE_IMAGE: ubuntu:20.04
