@@ -15,4 +15,4 @@ For available image tags, please refer to the [compose.yaml](compose.yaml) file.
 
 Or the repository container below.
 
-https://github.com/yxtay/databricks-container/pkgs/container/databricks-container
+[https://ghcr.io/yxtay/databricks-container]
