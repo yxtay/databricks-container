@@ -72,14 +72,6 @@ RUN apt-get update && \
     # Warning: you still need to start the ssh process with `sudo service ssh start`
     id -u ubuntu || useradd --shell /bin/bash --groups sudo ubuntu
 
-# https://docs.azul.com/core/install/debian
-RUN curl -s https://repos.azul.com/azul-repo.key | gpg --dearmor -o /usr/share/keyrings/azul.gpg && \
-    echo "deb [signed-by=/usr/share/keyrings/azul.gpg] https://repos.azul.com/zulu/deb stable main" | tee /etc/apt/sources.list.d/zulu.list && \
-    apt-get update && \
-    apt-get install --yes --no-install-recommends "zulu${JDK_VERSION}-jre-headless" && \
-    rm -rf /var/lib/apt/lists/* && \
-    java -version
-
 ARG UV_NO_CACHE=1
 ENV UV_PYTHON=${PYTHON_VERSION} \
     UV_PYTHON_DOWNLOADS=manual \
