@@ -12,7 +12,7 @@ on:
   workflow_call:
     inputs:
       push_image:
-        description: Push image to registry
+        description: Push image
         required: false
         default: false
         type: boolean
@@ -20,7 +20,7 @@ on:
   workflow_dispatch:
     inputs:
       push_image:
-        description: Push image to registry
+        description: Push image
         required: false
         default: false
         type: boolean
