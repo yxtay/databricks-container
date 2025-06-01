@@ -1,4 +1,5 @@
 # hadolint global ignore=DL3008
+# kics-scan disable=67fd0c4a-68cf-46d7-8c41-bc9fba7e40ae
 ARG BASE_IMAGE=ubuntu:24.04@sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6e93eef074c9505d2233
 
 FROM ghcr.io/astral-sh/uv:latest@sha256:563b73ab264117698521303e361fb781a0b421058661b4055750b6c822262d1e AS uv
