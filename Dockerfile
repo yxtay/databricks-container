@@ -1,5 +1,4 @@
 # hadolint global ignore=DL3008
-# kics-scan disable=965a08d7-ef86-4f14-8792-4a3b2098937e,451d79dc-0588-476a-ad03-3c7f0320abb3
 ARG BASE_IMAGE=ubuntu:24.04@sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6e93eef074c9505d2233
 
 FROM ghcr.io/astral-sh/uv:latest@sha256:563b73ab264117698521303e361fb781a0b421058661b4055750b6c822262d1e AS uv
@@ -92,6 +91,8 @@ RUN uv python install && \
     uv pip install --no-cache-dir virtualenv && \
     uv pip list
 
+HEALTHCHECK CMD ["uv", "pip", "list"]
+
 FROM base AS build
 
 RUN apt-get update && \
@@ -112,5 +113,3 @@ FROM base AS runtime
 COPY --from=build ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 USER ubuntu
-
-HEALTHCHECK CMD ["uv", "pip", "list"]
