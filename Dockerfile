@@ -31,15 +31,13 @@ ENV DATABRICKS_RUNTIME_VERSION=${DATABRICKS_RUNTIME_VERSION} \
     USER=root \
     VIRTUAL_ENV=${VIRTUAL_ENV}
 
-WORKDIR /root
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
 # Add new user forexit cluster library installation
-RUN useradd libraries && \
-    usermod --lock libraries && \
+RUN useradd libraries && usermod --lock libraries && \
     # Warning: the created user has root permissions inside the container
     # Warning: you still need to start the ssh process with `sudo service ssh start`
-    id -u ubuntu || useradd --shell /bin/bash --groups sudo ubuntu
+    if ! id -u ubuntu; then useradd --shell /bin/bash --groups sudo ubuntu; fi
 
 COPY <<-EOF /etc/apt/apt.conf.d/99-disable-recommends
 APT::Install-Recommends "false";
