@@ -33,6 +33,12 @@ ENV DATABRICKS_RUNTIME_VERSION=${DATABRICKS_RUNTIME_VERSION} \
 WORKDIR /root
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
+# Add new user forexit cluster library installation
+RUN useradd libraries && usermod --lock libraries && \
+    # Warning: the created user has root permissions inside the container
+    # Warning: you still need to start the ssh process with `sudo service ssh start`
+    id -u ubuntu || useradd --shell /bin/bash --groups sudo ubuntu
+
 COPY <<-EOF /etc/apt/apt.conf.d/99-disable-recommends
 APT::Install-Recommends "false";
 APT::Install-Suggests "false";
@@ -62,15 +68,8 @@ RUN apt-get update && \
     openssh-server \
     # table acl
     acl \
-    # build
-    build-essential \
     && \
-    rm -rf /var/lib/apt/lists/* && \
-    # Add new user forexit cluster library installation
-    useradd libraries && usermod --lock libraries && \
-    # Warning: the created user has root permissions inside the container
-    # Warning: you still need to start the ssh process with `sudo service ssh start`
-    id -u ubuntu || useradd --shell /bin/bash --groups sudo ubuntu
+    rm -rf /var/lib/apt/lists/*
 
 # https://docs.azul.com/core/install/debian
 RUN curl -s https://repos.azul.com/azul-repo.key | gpg --dearmor -o /usr/share/keyrings/azul.gpg && \
@@ -92,7 +91,13 @@ RUN uv python install && \
     uv pip install virtualenv && \
     uv pip list
 
-FROM base AS runtime
+HEALTHCHECK CMD ["uv", "pip", "list"]
+
+FROM base AS build
+
+RUN apt-get update && \
+    apt-get install --yes --no-install-recommends build-essential && \
+    rm -rf /var/lib/apt/lists/*
 
 # jumpstart package versions
 RUN --mount=source=requirements.txt,target=requirements.txt \
@@ -103,4 +108,8 @@ RUN --mount=source=requirements.txt,target=requirements.txt \
     uv pip uninstall pyspark && \
     uv pip list
 
-HEALTHCHECK CMD ["uv", "pip", "list"]
+FROM base AS runtime
+
+COPY --from=build ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+
+USER ubuntu
