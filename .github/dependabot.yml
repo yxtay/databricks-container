@@ -31,12 +31,12 @@ updates:
       github-actions:
         update-types: [minor, patch]
 
-  - package-ecosystem: uv
+  - package-ecosystem: pip
     directory: /
     schedule:
       interval: daily
     commit-message:
-      prefix: build(uv)
+      prefix: build(pip)
     groups:
-      uv:
+      pip:
         update-types: [minor, patch]
