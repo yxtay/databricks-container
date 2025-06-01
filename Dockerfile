@@ -1,4 +1,5 @@
 # hadolint global ignore=DL3008
+# kics-scan disable=965a08d7-ef86-4f14-8792-4a3b2098937e,451d79dc-0588-476a-ad03-3c7f0320abb3
 ARG BASE_IMAGE=ubuntu:24.04@sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6e93eef074c9505d2233
 
 FROM ghcr.io/astral-sh/uv:latest@sha256:563b73ab264117698521303e361fb781a0b421058661b4055750b6c822262d1e AS uv
@@ -34,7 +35,8 @@ WORKDIR /root
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
 # Add new user forexit cluster library installation
-RUN useradd libraries && usermod --lock libraries && \
+RUN useradd libraries && \
+    usermod --lock libraries && \
     # Warning: the created user has root permissions inside the container
     # Warning: you still need to start the ssh process with `sudo service ssh start`
     id -u ubuntu || useradd --shell /bin/bash --groups sudo ubuntu
@@ -88,10 +90,8 @@ ENV UV_PYTHON=${PYTHON_VERSION} \
 COPY --from=uv /uv /uvx /bin/
 RUN uv python install && \
     uv venv /usr --allow-existing --seed && \
-    uv pip install virtualenv && \
+    uv pip install --no-cache-dir virtualenv && \
     uv pip list
-
-HEALTHCHECK CMD ["uv", "pip", "list"]
 
 FROM base AS build
 
@@ -102,7 +102,7 @@ RUN apt-get update && \
 # jumpstart package versions
 RUN --mount=source=requirements.txt,target=requirements.txt \
     uv venv "${VIRTUAL_ENV}" --seed && \
-    uv pip install --requirements requirements.txt pyspark=="${PYSPARK_VERSION}" && \
+    uv pip install --no-cache-dir --requirements requirements.txt pyspark=="${PYSPARK_VERSION}" && \
     # pyspark is actually not required because it will be injected in databricks cluster
     # there are a number of vulnerabilities due to outdated jar files in pyspark
     uv pip uninstall pyspark && \
@@ -113,3 +113,5 @@ FROM base AS runtime
 COPY --from=build ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 USER ubuntu
+
+HEALTHCHECK CMD ["uv", "pip", "list"]
