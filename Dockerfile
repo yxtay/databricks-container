@@ -33,7 +33,7 @@ ENV DATABRICKS_RUNTIME_VERSION=${DATABRICKS_RUNTIME_VERSION} \
 
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
-# Add new user forexit cluster library installation
+# Add library user for cluster library installation
 RUN useradd --create-home libraries && usermod --lock libraries && \
     # Warning: the created user has root permissions inside the container
     # Warning: you still need to start the ssh process with `sudo service ssh start`
@@ -68,8 +68,7 @@ RUN apt-get update && \
     openssh-server \
     # table acl
     acl \
-    && \
-    rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 # https://docs.azul.com/core/install/debian
 RUN curl -s https://repos.azul.com/azul-repo.key | gpg --dearmor -o /usr/share/keyrings/azul.gpg && \
@@ -99,12 +98,11 @@ RUN apt-get update && \
     apt-get install --yes --no-install-recommends build-essential && \
     rm -rf /var/lib/apt/lists/*
 
-# jumpstart package versions
 RUN --mount=source=requirements.txt,target=requirements.txt \
     uv venv "${VIRTUAL_ENV}" --seed && \
     uv pip install --no-cache-dir --requirements requirements.txt pyspark=="${PYSPARK_VERSION}" && \
     # pyspark is actually not required because it will be injected in databricks cluster
-    # there are a number of vulnerabilities due to outdated jar files in pyspark
+    # there are a number of vulnerabilities due to outdated jar packages in pyspark
     uv pip uninstall pyspark && \
     uv pip list
 
