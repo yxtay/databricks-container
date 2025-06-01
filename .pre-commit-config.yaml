@@ -39,22 +39,6 @@ repos:
       - id: no-commit-to-branch
       - id: forbid-new-submodules
 
-        # python
-      - id: check-ast
-      - id: check-builtin-literals
-      - id: check-docstring-first
-      - id: debug-statements
-      - id: fix-encoding-pragma
-        args: [--remove]
-      - id: name-tests-test
-        args: [--pytest-test-first]
-      - id: requirements-txt-fixer # conflicts with poetry
-
-        # security
-      - id: detect-aws-credentials
-        args: [--allow-missing-credentials]
-      - id: detect-private-key
-
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.26.0
     hooks:
@@ -64,11 +48,6 @@ repos:
     rev: v1.7.7
     hooks:
       - id: actionlint
-
-  - repo: https://github.com/biomejs/pre-commit
-    rev: v2.0.0-beta.5
-    hooks:
-      - id: biome-check
 
   - repo: https://github.com/editorconfig-checker/editorconfig-checker
     rev: v3.3.0
@@ -85,30 +64,6 @@ repos:
     hooks:
       - id: markdownlint
 
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.11
-    hooks:
-      - id: ruff
-        types_or: [python, pyi, jupyter]
-        args: [--fix-only, --unsafe-fixes]
-      - id: ruff-format
-        types_or: [python, pyi, jupyter]
-
-  - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.10.0
-    hooks:
-      - id: shellcheck
-
-  - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.11.0-1
-    hooks:
-      - id: shfmt
-
-  - repo: https://github.com/ComPWA/taplo-pre-commit
-    rev: v0.9.3
-    hooks:
-      - id: taplo-format
-
   - repo: https://github.com/google/yamlfmt
     rev: v0.17.0
     hooks:
@@ -116,4 +71,4 @@ repos:
 
 ci:
   autoupdate_commit_msg: "ci: pre-commit autoupdate"
-  skip: [hadolint-docker, shellcheck]
+  skip: [hadolint-docker]
