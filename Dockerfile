@@ -90,8 +90,6 @@ RUN uv python install && \
     uv pip install --no-cache-dir virtualenv && \
     uv pip list
 
-HEALTHCHECK CMD ["uv", "pip", "list"]
-
 FROM base AS build
 
 RUN apt-get update && \
@@ -111,3 +109,5 @@ FROM base AS runtime
 COPY --from=build ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 USER ubuntu
+
+HEALTHCHECK CMD ["uv", "pip", "list"]
