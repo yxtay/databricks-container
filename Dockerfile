@@ -3,6 +3,7 @@ ARG BASE_IMAGE=ubuntu:24.04@sha256:6015f66923d7afbc53558d7ccffd325d43b4e249f41a6
 
 FROM ghcr.io/astral-sh/uv:latest@sha256:563b73ab264117698521303e361fb781a0b421058661b4055750b6c822262d1e AS uv
 
+# hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS base
 
 ARG DATABRICKS_RUNTIME_VERSION=16.4
@@ -30,8 +31,13 @@ ENV DATABRICKS_RUNTIME_VERSION=${DATABRICKS_RUNTIME_VERSION} \
     USER=root \
     VIRTUAL_ENV=${VIRTUAL_ENV}
 
-WORKDIR /root
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
+
+# Add library user for cluster library installation
+RUN useradd --create-home libraries && usermod --lock libraries && \
+    # Warning: the created user has root permissions inside the container
+    # Warning: you still need to start the ssh process with `sudo service ssh start`
+    if ! id -u ubuntu; then useradd --create-home --shell /bin/bash --groups sudo ubuntu; fi
 
 COPY <<-EOF /etc/apt/apt.conf.d/99-disable-recommends
 APT::Install-Recommends "false";
@@ -62,15 +68,7 @@ RUN apt-get update && \
     openssh-server \
     # table acl
     acl \
-    # build
-    build-essential \
-    && \
-    rm -rf /var/lib/apt/lists/* && \
-    # Add new user forexit cluster library installation
-    useradd libraries && usermod --lock libraries && \
-    # Warning: the created user has root permissions inside the container
-    # Warning: you still need to start the ssh process with `sudo service ssh start`
-    id -u ubuntu || useradd --shell /bin/bash --groups sudo ubuntu
+    && rm -rf /var/lib/apt/lists/*
 
 # https://docs.azul.com/core/install/debian
 RUN curl -s https://repos.azul.com/azul-repo.key | gpg --dearmor -o /usr/share/keyrings/azul.gpg && \
@@ -89,18 +87,27 @@ ENV UV_PYTHON=${PYTHON_VERSION} \
 COPY --from=uv /uv /uvx /bin/
 RUN uv python install && \
     uv venv /usr --allow-existing --seed && \
-    uv pip install virtualenv && \
+    uv pip install --no-cache-dir virtualenv && \
+    uv pip list
+
+FROM base AS build
+
+RUN apt-get update && \
+    apt-get install --yes --no-install-recommends build-essential && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN --mount=source=requirements.txt,target=requirements.txt \
+    uv venv "${VIRTUAL_ENV}" --seed && \
+    uv pip install --no-cache-dir --requirements requirements.txt pyspark=="${PYSPARK_VERSION}" && \
+    # pyspark is actually not required because it will be injected in databricks cluster
+    # there are a number of vulnerabilities due to outdated jar packages in pyspark
+    uv pip uninstall pyspark && \
     uv pip list
 
 FROM base AS runtime
 
-# jumpstart package versions
-RUN --mount=source=requirements.txt,target=requirements.txt \
-    uv venv "${VIRTUAL_ENV}" --seed && \
-    uv pip install --requirements requirements.txt pyspark=="${PYSPARK_VERSION}" && \
-    # pyspark is actually not required because it will be injected in databricks cluster
-    # there are a number of vulnerabilities due to outdated jar files in pyspark
-    uv pip uninstall pyspark && \
-    uv pip list
+COPY --from=build ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+
+USER ubuntu
 
 HEALTHCHECK CMD ["uv", "pip", "list"]
