@@ -55,7 +55,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      PUSH_IMAGE: ${{ github.event_name == 'push' || toJson(inputs.push_image) }}
+      PUSH_IMAGE: ${{ github.event_name == 'push' || toJson(inputs.push_image) == true }}
     steps:
       - uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3
 
