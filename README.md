@@ -2,7 +2,7 @@
 
 The dockerfile is based on the official
 [databricks/containers](https://github.com/databricks/containers) repository.
-Installed ubuntu packages and python libraries are kept to the minimum required
+Installed ubuntu and python packages are kept to the minimum required
 to be used for Databricks Container Service and support the necessary features.
 
 The container images have been tested and verified to work.
@@ -15,9 +15,9 @@ For available image tags, please refer to the [compose.yaml](compose.yaml) file.
 
 Or the repository container registry: <https://ghcr.io/yxtay/databricks-container>
 
-## Python library Versions
+## Python Package Versions
 
-The installed python library versions should follow
+The installed python package versions should follow
 the latest versions available as of the release dates published on the
 [Databricks Runtime releast notes](https://docs.databricks.com/aws/en/release-notes/runtime/).
 They should also be compatible with the particular
