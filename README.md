@@ -13,4 +13,12 @@ to install libraries required for your use cases.
 
 For available image tags, please refer to the [compose.yaml](compose.yaml) file.
 
-Or the container registry: <https://ghcr.io/yxtay/databricks-container>
+Or the repository container registry: <https://ghcr.io/yxtay/databricks-container>
+
+## Python library Versions
+
+The installed python library versions should follow
+the latest versions available as of the release dates published on the
+[Databricks Runtime releast notes](https://docs.databricks.com/aws/en/release-notes/runtime/).
+They should also be compatible with the particular
+spark version specified for each runtime version.
