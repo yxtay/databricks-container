@@ -72,10 +72,8 @@ jobs:
         uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6
         with:
           targets: ${{ matrix.target }}
-          load: ${{ !toJson(env.PUSH_IMAGE) }}
+          load: true
           push: ${{ env.PUSH_IMAGE }}
-          provenance: ${{ env.PUSH_IMAGE }}
-          sbom: ${{ env.PUSH_IMAGE }}
 
       - run: docker run "${IMAGE_TAG}" uv pip list
         env:
