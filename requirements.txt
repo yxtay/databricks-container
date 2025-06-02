@@ -12,5 +12,5 @@ setuptools
 #######################
 # Additional Packages #
 #######################
-# deltaspark
+# delta-spark
 # mlflow-skinny
