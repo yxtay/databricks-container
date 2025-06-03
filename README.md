@@ -22,3 +22,9 @@ the latest versions available as of the release dates published on the
 [Databricks Runtime releast notes](https://docs.databricks.com/aws/en/release-notes/runtime/).
 They should also be compatible with the particular
 spark version specified for each runtime version.
+
+## References
+
+- [databricks/containers](https://github.com/databricks/containers)
+- [Customize containers with Databricks Container Service](https://docs.databricks.com/aws/en/compute/custom-containers)
+- [Databricks Runtime release notes versions and compatibility](https://docs.databricks.com/aws/en/release-notes/runtime/)

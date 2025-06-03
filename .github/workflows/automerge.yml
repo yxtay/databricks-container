@@ -1,0 +1,50 @@
+name: automerge
+on:
+  pull_request:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref_name != github.event.repository.default_branch }}
+
+jobs:
+  dependabot:
+    permissions:
+      contents: write
+      pull-requests: write
+
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: metadata
+        uses: dependabot/fetch-metadata@08eff52bf64351f401fb50d4972fa95b9f2c2d1b # v2
+
+      - name: log metadata
+        run: echo "${DEPENDABOT_METADATA}"
+        env:
+          DEPENDABOT_METADATA: ${{ toJson(steps.metadata.outputs) }}
+
+      - name: automerge
+        if: ${{ !contains(steps.metadata.outputs.update-type, 'major' ) }}
+        run: gh pr merge "${PR_NUMBER}" --auto --squash
+        env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+
+  pre-commit-ci:
+    permissions:
+      contents: write
+      pull-requests: write
+
+    if: ${{ github.event.pull_request.user.login == 'pre-commit-ci[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: automerge
+        run: gh pr merge "${PR_NUMBER}" --auto --squash
+        env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
