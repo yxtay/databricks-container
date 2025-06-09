@@ -42,10 +42,10 @@ RUN useradd --create-home libraries && usermod --lock libraries && \
     if ! id -u ubuntu; then useradd --create-home --shell /bin/bash --groups sudo ubuntu; fi
 
 RUN cat <<-EOF > /etc/apt/apt.conf.d/99-disable-recommends
-APT::Install-Recommends "false";
-APT::Install-Suggests "false";
-APT::AutoRemove::RecommendsImportant "false";
-APT::AutoRemove::SuggestsImportant "false";
+    APT::Install-Recommends "false";
+    APT::Install-Suggests "false";
+    APT::AutoRemove::RecommendsImportant "false";
+    APT::AutoRemove::SuggestsImportant "false";
 EOF
 
 # https://github.com/databricks/containers/blob/master/ubuntu/minimal/Dockerfile
