@@ -2,7 +2,7 @@
 # kics-scan disable=fd54f200-402c-4333-a5a4-36ef6709af2f
 ARG BASE_IMAGE=ubuntu:24.04@sha256:b59d21599a2b151e23eea5f6602f4af4d7d31c4e236d22bf0b62b86d2e386b8f
 
-FROM ghcr.io/astral-sh/uv:latest@sha256:4faec156e35a5f345d57804d8858c6ba1cf6352ce5f4bffc11b7fdebdef46a38 AS uv
+FROM ghcr.io/astral-sh/uv:0.7.12@sha256:4faec156e35a5f345d57804d8858c6ba1cf6352ce5f4bffc11b7fdebdef46a38 AS uv
 
 # hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS base
@@ -42,10 +42,10 @@ RUN useradd --create-home libraries && usermod --lock libraries && \
     if ! id -u ubuntu; then useradd --create-home --shell /bin/bash --groups sudo ubuntu; fi
 
 RUN cat <<-EOF > /etc/apt/apt.conf.d/99-disable-recommends
-    APT::Install-Recommends "false";
-    APT::Install-Suggests "false";
-    APT::AutoRemove::RecommendsImportant "false";
-    APT::AutoRemove::SuggestsImportant "false";
+APT::Install-Recommends "false";
+APT::Install-Suggests "false";
+APT::AutoRemove::RecommendsImportant "false";
+APT::AutoRemove::SuggestsImportant "false";
 EOF
 
 # https://github.com/databricks/containers/blob/master/ubuntu/minimal/Dockerfile
@@ -99,8 +99,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
-RUN --mount=source=requirements.txt,target=requirements.txt \
-    uv venv "${VIRTUAL_ENV}" --seed && \
+RUN uv venv "${VIRTUAL_ENV}" --seed && \
     uv pip install --no-cache-dir --requirements requirements.txt pyspark=="${PYSPARK_VERSION}" && \
     # pyspark is actually not required because it will be injected in databricks cluster
     # there are a number of vulnerabilities due to outdated jar packages in pyspark
