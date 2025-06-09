@@ -32,6 +32,7 @@ ENV DATABRICKS_RUNTIME_VERSION=${DATABRICKS_RUNTIME_VERSION} \
     USER=root \
     VIRTUAL_ENV=${VIRTUAL_ENV}
 
+WORKDIR /databricks
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
 # Add library user for cluster library installation
@@ -40,7 +41,7 @@ RUN useradd --create-home libraries && usermod --lock libraries && \
     # Warning: you still need to start the ssh process with `sudo service ssh start`
     if ! id -u ubuntu; then useradd --create-home --shell /bin/bash --groups sudo ubuntu; fi
 
-COPY <<-EOF /etc/apt/apt.conf.d/99-disable-recommends
+RUN cat <<-EOF > /etc/apt/apt.conf.d/99-disable-recommends
 APT::Install-Recommends "false";
 APT::Install-Suggests "false";
 APT::AutoRemove::RecommendsImportant "false";
@@ -97,6 +98,7 @@ RUN apt-get update && \
     apt-get install --yes --no-install-recommends build-essential && \
     rm -rf /var/lib/apt/lists/*
 
+COPY requirements.txt .
 RUN --mount=source=requirements.txt,target=requirements.txt \
     uv venv "${VIRTUAL_ENV}" --seed && \
     uv pip install --no-cache-dir --requirements requirements.txt pyspark=="${PYSPARK_VERSION}" && \
