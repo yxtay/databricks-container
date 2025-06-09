@@ -42,10 +42,10 @@ RUN useradd --create-home libraries && usermod --lock libraries && \
     if ! id -u ubuntu; then useradd --create-home --shell /bin/bash --groups sudo ubuntu; fi
 
 RUN cat <<-EOF > /etc/apt/apt.conf.d/99-disable-recommends
-    APT::Install-Recommends "false";
-    APT::Install-Suggests "false";
-    APT::AutoRemove::RecommendsImportant "false";
-    APT::AutoRemove::SuggestsImportant "false";
+APT::Install-Recommends "false";
+APT::Install-Suggests "false";
+APT::AutoRemove::RecommendsImportant "false";
+APT::AutoRemove::SuggestsImportant "false";
 EOF
 
 # https://github.com/databricks/containers/blob/master/ubuntu/minimal/Dockerfile
@@ -99,8 +99,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
-RUN --mount=source=requirements.txt,target=requirements.txt \
-    uv venv "${VIRTUAL_ENV}" --seed && \
+RUN uv venv "${VIRTUAL_ENV}" --seed && \
     uv pip install --no-cache-dir --requirements requirements.txt pyspark=="${PYSPARK_VERSION}" && \
     # pyspark is actually not required because it will be injected in databricks cluster
     # there are a number of vulnerabilities due to outdated jar packages in pyspark
