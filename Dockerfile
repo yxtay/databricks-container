@@ -81,14 +81,15 @@ RUN curl -s https://repos.azul.com/azul-repo.key | gpg --dearmor -o /usr/share/k
     java -version
 
 ARG UV_NO_CACHE=1
-ENV UV_PYTHON=${VIRTUAL_ENV}/bin/python \
+ENV UV_PYTHON=${PYTHON_VERSION} \
     UV_PYTHON_DOWNLOADS=manual \
     UV_PYTHON_INSTALL_DIR=/opt
 
 # databricks uses root virtualenv to create virtual environments
 COPY --from=uv /uv /uvx /bin/
-# RUN uv python install && \
-#     uv venv /usr --allow-existing && \
+RUN uv python install
+#     uv venv /usr --allow-existing --seed && \
+#     uv pip install --no-cache-dir virtualenv && \
 #     uv pip list
 
 FROM base AS build
@@ -109,6 +110,5 @@ RUN uv python install && \
 FROM base AS runtime
 
 COPY --from=build ${VIRTUAL_ENV} ${VIRTUAL_ENV}
-ENV UV_PYTHON=${VIRTUAL_ENV}/bin/python
 
 HEALTHCHECK CMD ["uv", "pip", "list"]
