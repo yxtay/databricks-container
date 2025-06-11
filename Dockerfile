@@ -99,7 +99,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
-RUN uv venv "${VIRTUAL_ENV}" --seed && \
+RUN uv python install && \
+    uv venv "${VIRTUAL_ENV}" --seed && \
     uv pip install --no-cache-dir --requirements requirements.txt pyspark=="${PYSPARK_VERSION}" && \
     # pyspark is actually not required because it will be injected in databricks cluster
     # there are a number of vulnerabilities due to outdated jar packages in pyspark
