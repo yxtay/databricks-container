@@ -81,15 +81,15 @@ RUN curl -s https://repos.azul.com/azul-repo.key | gpg --dearmor -o /usr/share/k
     java -version
 
 ARG UV_NO_CACHE=1
-ENV UV_PYTHON=${PYTHON_VERSION} \
+ENV UV_PYTHON=${VIRTUAL_ENV}/bin/python \
     UV_PYTHON_DOWNLOADS=manual \
     UV_PYTHON_INSTALL_DIR=/opt
 
 # databricks uses root virtualenv to create virtual environments
 COPY --from=uv /uv /uvx /bin/
-RUN uv python install && \
-    uv venv /usr --allow-existing && \
-    uv pip list
+# RUN uv python install && \
+#     uv venv /usr --allow-existing && \
+#     uv pip list
 
 FROM base AS build
 
@@ -98,7 +98,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
-RUN uv python install && \
+RUN uv python install "${PYTHON_VERSION}" && \
     uv venv "${VIRTUAL_ENV}" --seed && \
     uv pip install --no-cache-dir --requirements requirements.txt pyspark=="${PYSPARK_VERSION}" && \
     # pyspark is actually not required because it will be injected in databricks cluster
