@@ -85,12 +85,8 @@ ENV UV_PYTHON=${PYTHON_VERSION} \
     UV_PYTHON_DOWNLOADS=manual \
     UV_PYTHON_INSTALL_DIR=/opt
 
-# databricks uses root virtualenv to create virtual environments
 COPY --from=uv /uv /uvx /bin/
 RUN uv python install
-#     uv venv /usr --allow-existing --seed && \
-#     uv pip install --no-cache-dir virtualenv && \
-#     uv pip list
 
 FROM base AS build
 
