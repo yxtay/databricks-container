@@ -88,7 +88,7 @@ ENV UV_PYTHON=${PYTHON_VERSION} \
 # databricks uses root virtualenv to create virtual environments
 COPY --from=uv /uv /uvx /bin/
 RUN uv python install && \
-    uv venv /usr && \
+    uv venv /usr --allow-existing && \
     uv pip list
 
 FROM base AS build
