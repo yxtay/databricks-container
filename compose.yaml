@@ -3,7 +3,7 @@ services:
     image: ghcr.io/yxtay/databricks-container:main
     build:
       cache_from:
-        - ghcr.io/yxtay/databricks-container:main
+        - ghcr.io/yxtay/databricks-container:main-cache
 
   "16_4":
     image: ghcr.io/yxtay/databricks-container:16.4
