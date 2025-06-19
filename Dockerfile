@@ -86,6 +86,7 @@ ENV UV_PYTHON=${PYTHON_VERSION} \
     UV_PYTHON_INSTALL_DIR=/opt/python
 
 COPY --from=uv /uv /uvx /bin/
+RUN uv python install
 
 FROM base AS build
 
@@ -94,8 +95,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
-RUN uv python install && \
-    uv venv "${VIRTUAL_ENV}" --seed && \
+RUN uv venv "${VIRTUAL_ENV}" --seed && \
     uv pip install --no-cache-dir --requirements requirements.txt pyspark=="${PYSPARK_VERSION}" && \
     # pyspark is actually not required because it will be injected in databricks cluster
     # there are a number of vulnerabilities due to outdated jar packages in pyspark
@@ -104,7 +104,6 @@ RUN uv python install && \
 
 FROM base AS runtime
 
-COPY --from=build ${UV_PYTHON_INSTALL_DIR} ${UV_PYTHON_INSTALL_DIR}
 COPY --from=build ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 HEALTHCHECK CMD ["uv", "pip", "list"]
