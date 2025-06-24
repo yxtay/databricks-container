@@ -68,7 +68,7 @@ repos:
     rev: v1.37.1
     hooks:
       - id: yamllint
-        args: [--strict, -d, relaxed]
+        args: [--strict, -d, "{extends: relaxed, rules: {line-length: disable}}"]
 
 ci:
   autoupdate_commit_msg: "ci: pre-commit autoupdate"
