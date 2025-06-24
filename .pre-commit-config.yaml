@@ -64,10 +64,10 @@ repos:
     hooks:
       - id: markdownlint
 
-  - repo: https://github.com/google/yamlfmt
-    rev: v0.17.1
-    hooks:
-      - id: yamlfmt
+  # - repo: https://github.com/google/yamlfmt
+  #   rev: v0.17.1
+  #   hooks:
+  #     - id: yamlfmt
 
 ci:
   autoupdate_commit_msg: "ci: pre-commit autoupdate"
