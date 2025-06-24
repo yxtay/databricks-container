@@ -25,14 +25,14 @@ repos:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext, md]
 
-        # files
+      # files
       - id: check-case-conflict
       - id: check-executables-have-shebangs
       - id: check-symlinks
       - id: destroyed-symlinks
       - id: fix-byte-order-marker
 
-        # git
+      # git
       - id: check-added-large-files
       - id: check-merge-conflict
       - id: check-vcs-permalinks
@@ -64,10 +64,12 @@ repos:
     hooks:
       - id: markdownlint
 
-  # - repo: https://github.com/google/yamlfmt
-  #   rev: v0.17.1
-  #   hooks:
-  #     - id: yamlfmt
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        args:
+          [--strict, -d, "{extends: relaxed, rules: {line-length: disable}}"]
 
 ci:
   autoupdate_commit_msg: "ci: pre-commit autoupdate"
