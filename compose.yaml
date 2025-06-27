@@ -16,7 +16,7 @@ services:
     image: ghcr.io/yxtay/databricks-container:16.4
     build:
       args:
-        BASE_IMAGE: ubuntu:24.04
+        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:24.04
         DATABRICKS_RUNTIME_VERSION: 16.4
         JDK_VERSION: 17
         PYSPARK_VERSION: 3.5.2
@@ -30,7 +30,7 @@ services:
     image: ghcr.io/yxtay/databricks-container:15.4
     build:
       args:
-        BASE_IMAGE: ubuntu:22.04
+        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:22.04
         DATABRICKS_RUNTIME_VERSION: 15.4
         JDK_VERSION: 8
         PYSPARK_VERSION: 3.5.0
@@ -44,7 +44,7 @@ services:
     image: ghcr.io/yxtay/databricks-container:14.3
     build:
       args:
-        BASE_IMAGE: ubuntu:22.04
+        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:22.04
         DATABRICKS_RUNTIME_VERSION: 14.3
         JDK_VERSION: 8
         PYSPARK_VERSION: 3.5.0
@@ -58,7 +58,7 @@ services:
     image: ghcr.io/yxtay/databricks-container:13.3
     build:
       args:
-        BASE_IMAGE: ubuntu:22.04
+        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:22.04
         DATABRICKS_RUNTIME_VERSION: 13.3
         JDK_VERSION: 8
         PYSPARK_VERSION: 3.4.1
@@ -72,7 +72,7 @@ services:
     image: ghcr.io/yxtay/databricks-container:12.2
     build:
       args:
-        BASE_IMAGE: ubuntu:20.04
+        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:20.04
         DATABRICKS_RUNTIME_VERSION: 12.2
         JDK_VERSION: 8
         PYSPARK_VERSION: 3.3.2
@@ -86,7 +86,7 @@ services:
     image: ghcr.io/yxtay/databricks-container:11.3
     build:
       args:
-        BASE_IMAGE: ubuntu:20.04
+        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:20.04
         DATABRICKS_RUNTIME_VERSION: 11.3
         JDK_VERSION: 8
         PYSPARK_VERSION: 3.3.0
@@ -100,7 +100,7 @@ services:
     image: ghcr.io/yxtay/databricks-container:10.4
     build:
       args:
-        BASE_IMAGE: ubuntu:20.04
+        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:20.04
         DATABRICKS_RUNTIME_VERSION: 10.4
         JDK_VERSION: 8
         PYSPARK_VERSION: 3.2.1
@@ -114,7 +114,7 @@ services:
     image: ghcr.io/yxtay/databricks-container:9.4
     build:
       args:
-        BASE_IMAGE: ubuntu:20.04
+        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:20.04
         DATABRICKS_RUNTIME_VERSION: 9.4
         JDK_VERSION: 8
         PYSPARK_VERSION: 3.1.2
