@@ -40,7 +40,7 @@ repos:
       - id: forbid-new-submodules
 
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.27.2
+    rev: v8.28.0
     hooks:
       - id: gitleaks
 
