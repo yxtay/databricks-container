@@ -6,7 +6,7 @@ default_stages:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit
-    rev: v4.2.0
+    rev: v4.3.0
     hooks:
       - id: validate_manifest
 
@@ -16,7 +16,7 @@ repos:
       - id: check-useless-excludes
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       # endings
       - id: end-of-file-fixer
@@ -50,7 +50,7 @@ repos:
       - id: actionlint
 
   - repo: https://github.com/editorconfig-checker/editorconfig-checker
-    rev: v3.3.0
+    rev: v3.4.0
     hooks:
       - id: editorconfig-checker
 
