@@ -42,7 +42,7 @@ jobs:
       targets: ${{ steps.bake-targets.outputs.targets }}
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - id: bake-targets
         uses: docker/bake-action/subaction/list-targets@37816e747588cb137173af99ab33873600c46ea8 # v6
