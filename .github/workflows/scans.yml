@@ -101,7 +101,7 @@ jobs:
           scan-type: fs
           format: sarif
           output: trivy-results.sarif
-          exit-code: ${{ github.event_name == 'pull_request' && 1 || 0}}
+          exit-code: ${{ github.event_name == 'pull_request' && 1 || 0 }}
           ignore-unfixed: true
           severity: HIGH,CRITICAL
           scanners: vuln,secret,misconfig
@@ -146,7 +146,7 @@ jobs:
           image-ref: ${{ steps.build.outputs.imageid }}
           format: sarif
           output: trivy-results.sarif
-          exit-code: ${{ github.event_name == 'pull_request' && 1 || 0}}
+          exit-code: ${{ github.event_name == 'pull_request' && 1 || 0 }}
           ignore-unfixed: true
           severity: HIGH,CRITICAL
           scanners: vuln
