@@ -60,18 +60,18 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: ghcr.io/${{ github.repository }}
-      PUSH_IMAGE: ${{ github.event_name == 'push' || toJson(inputs.push_image) == true }}
+      PUSH_IMAGE: ${{ github.event_name == 'push' || inputs.push_image == true }}
     steps:
       - run: |
           echo "${PUSH_IMAGE}"
-          echo "${{ env.PUSH_IMAGE }}"
-          echo "${{ env.PUSH_IMAGE != true }}"
+          echo "${{ fromJson(env.PUSH_IMAGE) }}"
+          echo "${{ fromJson(env.PUSH_IMAGE) }}"
 
       - uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3
 
       - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3
 
-      - if: ${{ env.PUSH_IMAGE == true }}
+      - if: ${{ fromJson(env.PUSH_IMAGE) }}
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3
         with:
           registry: ghcr.io
@@ -82,15 +82,15 @@ jobs:
         uses: docker/bake-action@3acf805d94d93a86cce4ca44798a76464a75b88c # v6
         with:
           targets: ${{ matrix.target }}
-          load: ${{ env.PUSH_IMAGE != true }}
+          load: ${{ ! fromJson(env.PUSH_IMAGE) }}
           push: ${{ env.PUSH_IMAGE }}
           provenance: ${{ env.PUSH_IMAGE }}
           sbom: ${{ env.PUSH_IMAGE }}
 
-      - if: ${{ env.PUSH_IMAGE != true }}
+      - if: ${{ ! fromJson(env.PUSH_IMAGE) }}
         run: docker run "${IMAGE_TAG}" uv pip list
         env:
           IMAGE_TAG: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target]['image.name'] }}
 
-      - if: ${{ env.PUSH_IMAGE == true }}
+      - if: ${{ fromJson(env.PUSH_IMAGE) }}
         run: docker compose run --rm ${{ matrix.target }} uv pip list
