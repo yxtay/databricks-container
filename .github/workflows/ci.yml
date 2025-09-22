@@ -88,8 +88,7 @@ jobs:
           provenance: ${{ env.PUSH_IMAGE }}
           sbom: ${{ env.PUSH_IMAGE }}
 
-      - if: ${{ ! fromJson(env.PUSH_IMAGE) }}
-        run: docker run "${IMAGE_TAG}" uv pip list
+      - run: docker run "${IMAGE_TAG}" uv pip list
         env:
           IMAGE_TAG: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target]['image.name'] }}
 
