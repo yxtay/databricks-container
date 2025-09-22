@@ -91,6 +91,3 @@ jobs:
       - run: docker run "${IMAGE_TAG}" uv pip list
         env:
           IMAGE_TAG: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target]['image.name'] }}
-
-      - if: ${{ fromJson(env.PUSH_IMAGE) }}
-        run: docker compose run --rm ${{ matrix.target }} uv pip list
