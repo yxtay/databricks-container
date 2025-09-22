@@ -11,6 +11,20 @@ services:
     security_opt:
       - no-new-privileges:true
 
+  "17_0":
+    <<: *main
+    image: ghcr.io/yxtay/databricks-container:17.0
+    build:
+      args:
+        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:24.04
+        DATABRICKS_RUNTIME_VERSION: "17.0"
+        JDK_VERSION: "17"
+        PYSPARK_VERSION: "4.0"
+        PYTHON_VERSION: "3.12"
+        UV_EXCLUDE_NEWER: "2025-06-24"
+      cache_from:
+        - ghcr.io/yxtay/databricks-container:17.0
+
   "16_4":
     <<: *main
     image: ghcr.io/yxtay/databricks-container:16.4
