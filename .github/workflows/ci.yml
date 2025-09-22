@@ -65,7 +65,7 @@ jobs:
       - run: |
           echo "${PUSH_IMAGE}"
           echo "${{ fromJson(env.PUSH_IMAGE) }}"
-          echo "${{ fromJson(env.PUSH_IMAGE) }}"
+          echo "${{ ! fromJson(env.PUSH_IMAGE) }}"
 
       - uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3
 
@@ -92,5 +92,5 @@ jobs:
         env:
           IMAGE_TAG: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target]['image.name'] }}
 
-      - if: ${{ fromJson(env.PUSH_IMAGE) }}
+      - if: ${{ ! fromJson(env.PUSH_IMAGE) }}
         run: docker compose run --rm ${{ matrix.target }} uv pip list
