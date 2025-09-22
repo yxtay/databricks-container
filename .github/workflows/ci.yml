@@ -76,9 +76,9 @@ jobs:
         uses: docker/bake-action@3acf805d94d93a86cce4ca44798a76464a75b88c # v6
         with:
           targets: ${{ matrix.target }}
-          load: true
           push: ${{ env.PUSH_IMAGE }}
 
-      - run: docker run "${IMAGE_TAG}" uv pip list
+      - run: docker run "${IMAGE_NAME}:${IMAGE_TAG}" uv pip list
         env:
-          IMAGE_TAG: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target]['image.name'] }}
+          IMAGE_NAME: ghcr.io/${{ github.repository }}
+          IMAGE_TAG: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target]['containerimage.digest'] }}
