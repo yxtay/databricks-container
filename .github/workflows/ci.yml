@@ -59,6 +59,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
+      IMAGE_NAME: ghcr.io/${{ github.repository }}
       PUSH_IMAGE: ${{ github.event_name == 'push' || toJson(inputs.push_image) == true }}
     steps:
       - uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3
@@ -77,8 +78,7 @@ jobs:
         with:
           targets: ${{ matrix.target }}
           push: ${{ env.PUSH_IMAGE }}
+          provenance: true
+          sbom: true
 
-      - run: docker run "${IMAGE_NAME}:${IMAGE_TAG}" uv pip list
-        env:
-          IMAGE_NAME: ghcr.io/${{ github.repository }}
-          IMAGE_TAG: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target]['containerimage.digest'] }}
+      - run: docker compose run --rm ${{ matrix.target }} uv pip list
