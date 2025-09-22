@@ -43,6 +43,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        with:
+          sparse-checkout: |
+            compose.yaml
 
       - id: bake-targets
         uses: docker/bake-action/subaction/list-targets@3acf805d94d93a86cce4ca44798a76464a75b88c # v6
@@ -62,10 +65,11 @@ jobs:
       IMAGE_NAME: ghcr.io/${{ github.repository }}
       PUSH_IMAGE: ${{ github.event_name == 'push' || inputs.push_image == true }}
     steps:
-      - run: |
-          echo "${PUSH_IMAGE}"
-          echo "${{ fromJson(env.PUSH_IMAGE) }}"
-          echo "${{ ! fromJson(env.PUSH_IMAGE) }}"
+      - if: ${{ fromJson(env.PUSH_IMAGE) }}
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        with:
+          sparse-checkout: |
+            compose.yaml
 
       - uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3
 
@@ -92,5 +96,5 @@ jobs:
         env:
           IMAGE_TAG: ${{ fromJson(steps.bake.outputs.metadata)[matrix.target]['image.name'] }}
 
-      - if: ${{ ! fromJson(env.PUSH_IMAGE) }}
+      - if: ${{ fromJson(env.PUSH_IMAGE) }}
         run: docker compose run --rm ${{ matrix.target }} uv pip list
