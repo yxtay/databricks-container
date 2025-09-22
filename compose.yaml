@@ -3,7 +3,7 @@ services:
     image: ghcr.io/yxtay/databricks-container:main
     build:
       cache_from:
-        - ghcr.io/yxtay/databricks-container:main-cache
+        - ghcr.io/yxtay/databricks-container:main
     healthcheck:
       test: [CMD, uv, pip, list]
     cap_drop:
