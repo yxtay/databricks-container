@@ -3,7 +3,7 @@
 # checkov:skip=CKV_DOCKER_3
 ARG BASE_IMAGE=public.ecr.aws/ubuntu/ubuntu:24.04@sha256:f65b6ec1d0ded61cebcfd7f39b1d3668967542d591fe12d2f80f2c23cbd3b681
 
-FROM ghcr.io/astral-sh/uv:0.8.22@sha256:9874eb7afe5ca16c363fe80b294fe700e460df29a55532bbfea234a0f12eddb1 AS uv
+FROM ghcr.io/astral-sh/uv:0.8.23@sha256:94390f20a83e2de83f63b2dadcca2efab2e6798f772edab52bf545696c86bdb4 AS uv
 
 # hadolint ignore=DL3006
 FROM ${BASE_IMAGE} AS base
