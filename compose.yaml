@@ -12,7 +12,7 @@ services:
       - no-new-privileges:true
 
   "17_0":
-    <<: *main
+    !!merge <<: *main
     image: ghcr.io/yxtay/databricks-container:17.0
     build:
       args:
@@ -26,7 +26,7 @@ services:
         - ghcr.io/yxtay/databricks-container:17.0
 
   "16_4":
-    <<: *main
+    !!merge <<: *main
     image: ghcr.io/yxtay/databricks-container:16.4
     build:
       args:
@@ -40,7 +40,7 @@ services:
         - ghcr.io/yxtay/databricks-container:16.4
 
   "15_4":
-    <<: *main
+    !!merge <<: *main
     image: ghcr.io/yxtay/databricks-container:15.4
     build:
       args:
@@ -54,7 +54,7 @@ services:
         - ghcr.io/yxtay/databricks-container:15.4
 
   "14_3":
-    <<: *main
+    !!merge <<: *main
     image: ghcr.io/yxtay/databricks-container:14.3
     build:
       args:
@@ -68,7 +68,7 @@ services:
         - ghcr.io/yxtay/databricks-container:14.3
 
   "13_3":
-    <<: *main
+    !!merge <<: *main
     image: ghcr.io/yxtay/databricks-container:13.3
     build:
       args:
@@ -82,7 +82,7 @@ services:
         - ghcr.io/yxtay/databricks-container:13.3
 
   "12_2":
-    <<: *main
+    !!merge <<: *main
     image: ghcr.io/yxtay/databricks-container:12.2
     build:
       args:
@@ -96,7 +96,7 @@ services:
         - ghcr.io/yxtay/databricks-container:12.2
 
   "11_3":
-    <<: *main
+    !!merge <<: *main
     image: ghcr.io/yxtay/databricks-container:11.3
     build:
       args:
@@ -110,7 +110,7 @@ services:
         - ghcr.io/yxtay/databricks-container:11.3
 
   "10_4":
-    <<: *main
+    !!merge <<: *main
     image: ghcr.io/yxtay/databricks-container:10.4
     build:
       args:
@@ -124,7 +124,7 @@ services:
         - ghcr.io/yxtay/databricks-container:10.4
 
   "9_4":
-    <<: *main
+    !!merge <<: *main
     image: ghcr.io/yxtay/databricks-container:9.4
     build:
       args:
