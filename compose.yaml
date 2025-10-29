@@ -19,7 +19,7 @@ services:
         BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:24.04
         DATABRICKS_RUNTIME_VERSION: "17.3"
         JDK_VERSION: "17"
-        PYSPARK_VERSION: "4.0"
+        PYSPARK_VERSION: 4.0.0
         PYTHON_VERSION: "3.12"
         UV_EXCLUDE_NEWER: "2025-10-22"
       cache_from:
