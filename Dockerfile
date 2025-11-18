@@ -71,6 +71,8 @@ RUN apt-get update && \
     openssh-server \
     # table acl
     acl \
+    # mlflow
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 # https://docs.azul.com/core/install/debian
