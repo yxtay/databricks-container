@@ -42,7 +42,7 @@ jobs:
       targets: ${{ steps.bake-targets.outputs.targets }}
 
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v5
         with:
           sparse-checkout: compose.yaml
 
@@ -64,7 +64,7 @@ jobs:
       PUSH_IMAGE: ${{ github.event_name == 'push' || inputs.push_image == true }}
     steps:
       - if: ${{ fromJson(env.PUSH_IMAGE) }}
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v5
         with:
           sparse-checkout: compose.yaml
 
