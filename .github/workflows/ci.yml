@@ -47,7 +47,7 @@ jobs:
           sparse-checkout: compose.yaml
 
       - id: bake-targets
-        uses: docker/bake-action/subaction/list-targets@3acf805d94d93a86cce4ca44798a76464a75b88c # v6
+        uses: docker/bake-action/subaction/list-targets@5be5f02ff8819ecd3092ea6b2e6261c31774f2b4 # v6
 
   docker-bake:
     permissions:
@@ -80,7 +80,7 @@ jobs:
           password: ${{ github.token }}
 
       - id: bake
-        uses: docker/bake-action@3acf805d94d93a86cce4ca44798a76464a75b88c # v6
+        uses: docker/bake-action@5be5f02ff8819ecd3092ea6b2e6261c31774f2b4 # v6
         with:
           targets: ${{ matrix.target }}
           load: ${{ ! fromJson(env.PUSH_IMAGE) }}
