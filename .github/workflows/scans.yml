@@ -90,14 +90,14 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.30
+      - uses: aquasecurity/trivy-action@c1824fd6edce30d7ab345a9989de00bbd46ef284 # 0.30
         with:
           scan-type: fs
           format: github
           output: dependency-results.sbom.json
           github-pat: ${{ github.token }}
 
-      - uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.30
+      - uses: aquasecurity/trivy-action@c1824fd6edce30d7ab345a9989de00bbd46ef284 # 0.30
         with:
           scan-type: fs
           format: sarif
@@ -135,14 +135,14 @@ jobs:
         env:
           IMAGE_ID: ${{ steps.build.outputs.imageid }}
 
-      - uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.30
+      - uses: aquasecurity/trivy-action@c1824fd6edce30d7ab345a9989de00bbd46ef284 # 0.30
         with:
           image-ref: ${{ steps.build.outputs.imageid }}
           format: github
           output: dependency-results.sbom.json
           github-pat: ${{ github.token }}
 
-      - uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.30
+      - uses: aquasecurity/trivy-action@c1824fd6edce30d7ab345a9989de00bbd46ef284 # 0.30
         with:
           image-ref: ${{ steps.build.outputs.imageid }}
           format: sarif
