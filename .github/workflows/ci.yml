@@ -57,7 +57,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: ${{ fromJson(needs.bake-matrix.outputs.matrix) }}
+        include: ${{ fromJson(needs.bake-matrix.outputs.matrix) }}
 
     runs-on: ubuntu-latest
     env:
