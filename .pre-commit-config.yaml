@@ -6,7 +6,7 @@ default_stages:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit
-    rev: v4.5.1
+    rev: v4.6.0
     hooks:
       - id: validate_manifest
 
@@ -40,7 +40,7 @@ repos:
       - id: forbid-new-submodules
 
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.1
+    rev: v8.30.0
     hooks:
       - id: gitleaks
 
@@ -60,7 +60,7 @@ repos:
       - id: hadolint-docker
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.22.0
+    rev: v0.22.1
     hooks:
       - id: markdownlint-cli2
         args: [--fix]
