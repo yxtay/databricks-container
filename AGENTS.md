@@ -11,11 +11,14 @@ No application code — infrastructure/packaging project only.
 ## Key Files
 
 - `Dockerfile` — multi-stage build (base → build → runtime)
-- `compose.yaml` — build matrix with per-version args (runtime, JDK, PySpark, Python, UV_EXCLUDE_NEWER)
+- `compose.yaml` — build matrix with per-version args
+  (runtime, JDK, PySpark, Python, UV_EXCLUDE_NEWER)
 - `requirements.txt` — Python packages installed in container
 - `.github/workflows/ci.yml` — build and push images via docker bake
 - `.github/workflows/scans.yml` — security scanning
-- `.pre-commit-config.yaml` — linting (hadolint, actionlint, markdownlint, yamlfmt, gitleaks, editorconfig)
+- `.pre-commit-config.yaml` — linting
+  (actionlint, markdownlint, yamlfmt,
+  gitleaks, editorconfig)
 - `renovate.json` — automated dependency updates
 
 ## Build and Test
@@ -37,8 +40,11 @@ pre-commit run --all-files
 ## Conventions
 
 - Base image pinned by digest in Dockerfile ARG.
-- `UV_EXCLUDE_NEWER` per version freezes Python dependency resolution to runtime release date.
-- PySpark installed then uninstalled — needed for dependency resolution, not shipped (injected by Databricks at runtime).
+- `UV_EXCLUDE_NEWER` per version freezes Python
+  dependency resolution to runtime release date.
+- PySpark installed then uninstalled — needed for
+  dependency resolution, not shipped
+  (injected by Databricks at runtime).
 - GitHub Actions pinned by commit SHA, not tag.
 - Renovate manages all dependency updates with automerge for minor/digest.
 - Pre-commit hooks enforce formatting — run before committing.
@@ -46,7 +52,11 @@ pre-commit run --all-files
 ## Adding a New Runtime Version
 
 1. Add new service block in `compose.yaml` following existing pattern.
-2. Set `DATABRICKS_RUNTIME_VERSION`, `JDK_VERSION`, `PYSPARK_VERSION`, `PYTHON_VERSION`, `UV_EXCLUDE_NEWER` based on [Databricks Runtime release notes](https://docs.databricks.com/aws/en/release-notes/runtime/).
+2. Set build args based on
+  [Databricks Runtime release notes][dbr-notes]:
+  `DATABRICKS_RUNTIME_VERSION`, `JDK_VERSION`,
+  `PYSPARK_VERSION`, `PYTHON_VERSION`,
+  `UV_EXCLUDE_NEWER`.
 3. Update `BASE_IMAGE` ubuntu version if needed.
 4. Build and verify: `docker buildx bake <target>`.
 
@@ -58,7 +68,9 @@ pre-commit run --all-files
 ## Modifying Python Dependencies
 
 1. Edit `requirements.txt`.
-2. Use version specifiers compatible with all supported Python versions, or use environment markers (e.g., `; python_version >= "3.10"`).
+2. Use version specifiers compatible with all
+  supported Python versions, or use environment
+  markers (e.g., `; python_version >= "3.10"`).
 3. Build all targets to verify compatibility across versions.
 
 ## CI/CD
@@ -67,3 +79,5 @@ pre-commit run --all-files
 - PRs → build only (no push), acts as validation.
 - Weekly scheduled rebuild picks up base image updates.
 - Scans workflow runs security checks (Trivy, Scorecard).
+
+[dbr-notes]: https://docs.databricks.com/aws/en/release-notes/runtime/

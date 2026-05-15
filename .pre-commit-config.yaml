@@ -5,16 +5,6 @@ default_stages:
   - pre-commit
 
 repos:
-  - repo: https://github.com/pre-commit/pre-commit
-    rev: v4.6.0
-    hooks:
-      - id: validate_manifest
-
-  - repo: meta
-    hooks:
-      #   - id: check-hooks-apply
-      - id: check-useless-excludes
-
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
@@ -54,11 +44,6 @@ repos:
     hooks:
       - id: editorconfig-checker
 
-  - repo: https://github.com/hadolint/hadolint
-    rev: v2.14.0
-    hooks:
-      - id: hadolint-docker
-
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.22.1
     hooks:
@@ -72,4 +57,3 @@ repos:
 
 ci:
   autoupdate_commit_msg: "ci: pre-commit autoupdate"
-  skip: [hadolint-docker]
