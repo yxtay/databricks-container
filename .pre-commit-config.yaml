@@ -50,6 +50,11 @@ repos:
       - id: markdownlint-cli2
         args: [--fix]
 
+  - repo: https://github.com/oxsecurity/megalinter
+    rev: v9.5.0
+    hooks:
+      - id: megalinter-incremental
+
   - repo: https://github.com/google/yamlfmt
     rev: v0.21.0
     hooks:
@@ -57,3 +62,4 @@ repos:
 
 ci:
   autoupdate_commit_msg: "ci: pre-commit autoupdate"
+  skip: [megalinter-incremental]
