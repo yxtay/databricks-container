@@ -42,7 +42,7 @@ jobs:
       matrix: ${{ steps.bake-matrix.outputs.matrix }}
 
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           sparse-checkout: compose.yaml
           persist-credentials: false
@@ -65,7 +65,7 @@ jobs:
       PUSH_IMAGE: ${{ github.event_name == 'push' || inputs.push_image == true }}
     steps:
       - if: ${{ fromJson(env.PUSH_IMAGE) }}
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           sparse-checkout: compose.yaml
           persist-credentials: false
