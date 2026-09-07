@@ -1,7 +1,7 @@
 # hadolint global ignore=DL3008
 # kics-scan disable=fd54f200-402c-4333-a5a4-36ef6709af2f,965a08d7-ef86-4f14-8792-4a3b2098937e
 # checkov:skip=CKV_DOCKER_3
-ARG BASE_IMAGE=public.ecr.aws/ubuntu/ubuntu:24.04@sha256:a54764b5b6340c272ffb45e303fe4c8064bbdfb76d732b325b79ae6b92900e4c
+ARG BASE_IMAGE=public.ecr.aws/ubuntu/ubuntu:24.04@sha256:41938337738ac39ec015eecf7ac5ed9add869fffeb394f2b90819ba6793d889b
 
 FROM ghcr.io/astral-sh/uv:0.12.10@sha256:2bb3ebca0a796a155094a27773d290c4b074572e6107f171d88d086682fd2500 AS uv
 
