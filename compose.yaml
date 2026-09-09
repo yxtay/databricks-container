@@ -11,17 +11,31 @@ services:
     security_opt:
       - no-new-privileges:true
 
+  "18":
+    !!merge <<: *main
+    image: ghcr.io/yxtay/databricks-container:18
+    build:
+      args:
+        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:24.04
+        DATABRICKS_RUNTIME_VERSION: 18
+        JDK_VERSION: 21
+        PYSPARK_VERSION: 4.1.0
+        PYTHON_VERSION: 3.12
+        UV_EXCLUDE_NEWER: 2026-06-10
+      cache_from:
+        - ghcr.io/yxtay/databricks-container:18
+
   "17_3":
     !!merge <<: *main
     image: ghcr.io/yxtay/databricks-container:17.3
     build:
       args:
         BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:24.04
-        DATABRICKS_RUNTIME_VERSION: "17.3"
-        JDK_VERSION: "17"
+        DATABRICKS_RUNTIME_VERSION: 17.3
+        JDK_VERSION: 17
         PYSPARK_VERSION: 4.0.0
-        PYTHON_VERSION: "3.12"
-        UV_EXCLUDE_NEWER: "2025-10-22"
+        PYTHON_VERSION: 3.12
+        UV_EXCLUDE_NEWER: 2025-10-22
       cache_from:
         - ghcr.io/yxtay/databricks-container:17.3
 
@@ -31,11 +45,11 @@ services:
     build:
       args:
         BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:24.04
-        DATABRICKS_RUNTIME_VERSION: "16.4"
-        JDK_VERSION: "17"
+        DATABRICKS_RUNTIME_VERSION: 16.4
+        JDK_VERSION: 17
         PYSPARK_VERSION: 3.5.2
-        PYTHON_VERSION: "3.12"
-        UV_EXCLUDE_NEWER: "2025-05-09"
+        PYTHON_VERSION: 3.12
+        UV_EXCLUDE_NEWER: 2025-05-09
       cache_from:
         - ghcr.io/yxtay/databricks-container:16.4
 
@@ -45,11 +59,11 @@ services:
     build:
       args:
         BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:22.04
-        DATABRICKS_RUNTIME_VERSION: "15.4"
-        JDK_VERSION: "8"
+        DATABRICKS_RUNTIME_VERSION: 15.4
+        JDK_VERSION: 8
         PYSPARK_VERSION: 3.5.0
-        PYTHON_VERSION: "3.11"
-        UV_EXCLUDE_NEWER: "2024-08-19"
+        PYTHON_VERSION: 3.11
+        UV_EXCLUDE_NEWER: 2024-08-19
       cache_from:
         - ghcr.io/yxtay/databricks-container:15.4
 
@@ -59,80 +73,10 @@ services:
     build:
       args:
         BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:22.04
-        DATABRICKS_RUNTIME_VERSION: "14.3"
-        JDK_VERSION: "8"
+        DATABRICKS_RUNTIME_VERSION: 14.3
+        JDK_VERSION: 8
         PYSPARK_VERSION: 3.5.0
         PYTHON_VERSION: "3.10"
-        UV_EXCLUDE_NEWER: "2024-02-01"
+        UV_EXCLUDE_NEWER: 2024-02-01
       cache_from:
         - ghcr.io/yxtay/databricks-container:14.3
-
-  "13_3":
-    !!merge <<: *main
-    image: ghcr.io/yxtay/databricks-container:13.3
-    build:
-      args:
-        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:22.04
-        DATABRICKS_RUNTIME_VERSION: "13.3"
-        JDK_VERSION: "8"
-        PYSPARK_VERSION: 3.4.1
-        PYTHON_VERSION: "3.10"
-        UV_EXCLUDE_NEWER: "2023-08-22"
-      cache_from:
-        - ghcr.io/yxtay/databricks-container:13.3
-
-  "12_2":
-    !!merge <<: *main
-    image: ghcr.io/yxtay/databricks-container:12.2
-    build:
-      args:
-        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:20.04
-        DATABRICKS_RUNTIME_VERSION: "12.2"
-        JDK_VERSION: "8"
-        PYSPARK_VERSION: 3.3.2
-        PYTHON_VERSION: "3.9"
-        UV_EXCLUDE_NEWER: "2023-03-01"
-      cache_from:
-        - ghcr.io/yxtay/databricks-container:12.2
-
-  "11_3":
-    !!merge <<: *main
-    image: ghcr.io/yxtay/databricks-container:11.3
-    build:
-      args:
-        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:20.04
-        DATABRICKS_RUNTIME_VERSION: "11.3"
-        JDK_VERSION: "8"
-        PYSPARK_VERSION: 3.3.0
-        PYTHON_VERSION: "3.9"
-        UV_EXCLUDE_NEWER: "2022-10-19"
-      cache_from:
-        - ghcr.io/yxtay/databricks-container:11.3
-
-  "10_4":
-    !!merge <<: *main
-    image: ghcr.io/yxtay/databricks-container:10.4
-    build:
-      args:
-        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:20.04
-        DATABRICKS_RUNTIME_VERSION: "10.4"
-        JDK_VERSION: "8"
-        PYSPARK_VERSION: 3.2.1
-        PYTHON_VERSION: "3.8"
-        UV_EXCLUDE_NEWER: "2022-03-18"
-      cache_from:
-        - ghcr.io/yxtay/databricks-container:10.4
-
-  "9_4":
-    !!merge <<: *main
-    image: ghcr.io/yxtay/databricks-container:9.4
-    build:
-      args:
-        BASE_IMAGE: public.ecr.aws/ubuntu/ubuntu:20.04
-        DATABRICKS_RUNTIME_VERSION: "9.4"
-        JDK_VERSION: "8"
-        PYSPARK_VERSION: 3.1.2
-        PYTHON_VERSION: "3.8"
-        UV_EXCLUDE_NEWER: "2021-09-23"
-      cache_from:
-        - ghcr.io/yxtay/databricks-container:9.4
