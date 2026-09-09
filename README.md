@@ -9,7 +9,7 @@ The container images have been tested and verified to work.
 They are suitable to be used as base images
 to install libraries required for your use cases.
 
-## Availabe Images
+## Available Images
 
 For available image tags, please refer to the [compose.yaml](compose.yaml) file.
 
@@ -19,7 +19,7 @@ Or the repository container registry: <https://ghcr.io/yxtay/databricks-containe
 
 The installed python package versions should follow
 the latest versions available as of the release dates published on the
-[Databricks Runtime releast notes](https://docs.databricks.com/aws/en/release-notes/runtime/).
+[Databricks Runtime release notes](https://docs.databricks.com/aws/en/release-notes/runtime/).
 They should also be compatible with the particular
 spark version specified for each runtime version.
 

@@ -28,10 +28,10 @@ No application code — infrastructure/packaging project only.
 docker compose build
 
 # build single target
-docker buildx bake 17_3
+docker buildx bake 18
 
 # run container smoke test
-docker run ghcr.io/yxtay/databricks-container:17.3 uv pip list
+docker run ghcr.io/yxtay/databricks-container:18 uv pip list
 
 # lint
 pre-commit run --all-files
